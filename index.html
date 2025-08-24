@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Posture Analyzer - AI-Powered Posture Tracking</title>
+    <meta name="description" content="Real-time AI-powered posture analysis with MediaPipe. Track spine alignment, shoulder balance, and get instant feedback to improve your posture.">
+    <meta name="keywords" content="posture analyzer, AI posture, spine alignment, posture tracker, ergonomics">
+    <meta property="og:title" content="Advanced Posture Analyzer">
+    <meta property="og:description" content="AI-powered real-time posture detection and correction">
+    <meta property="og:type" content="website">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f0f1e;
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .app-header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .app-header h1 {
+            font-size: 2em;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .app-header p {
+            opacity: 0.9;
+            font-size: 0.95em;
+        }
+
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 20px;
+            max-width: 1400px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .video-section {
+            background: #1a1a2e;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #000;
+        }
+
+        video, canvas {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .control-bar {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        button.calibrate {
+            background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+        }
+
+        button.stop {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .metrics-card {
+            background: #1a1a2e;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        .metrics-card h3 {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #00d4ff;
+        }
+
+        .metric-item {
+            margin-bottom: 15px;
+        }
+
+        .metric-label {
+            font-size: 0.85em;
+            color: #888;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .metric-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .metric-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .metric-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: all 0.5s ease;
+        }
+
+        .score-display {
+            text-align: center;
+            padding: 25px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .score-value {
+            font-size: 3.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .score-label {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .good { color: #00ff88; }
+        .fair { color: #ffcc00; }
+        .poor { color: #ff4444; }
+
+        .alert-box {
+            background: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .alert-box.error {
+            background: rgba(255, 68, 68, 0.1);
+            border-left-color: #ff4444;
+        }
+
+        .alert-box.success {
+            background: rgba(0, 255, 136, 0.1);
+            border-left-color: #00ff88;
+        }
+
+        .history-chart {
+            height: 120px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            padding: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-line {
+            stroke: #00d4ff;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .chart-area {
+            fill: url(#gradient);
+            opacity: 0.3;
+        }
+
+        .tips-section {
+            background: #1a1a2e;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .tips-section h3 {
+            color: #00d4ff;
+            margin-bottom: 15px;
+        }
+
+        .tip-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .tip-icon {
+            margin-right: 10px;
+            color: #00ff88;
+            font-size: 1.2em;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255,255,255,0.1);
+            border-top-color: #00d4ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .realtime-feedback {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.8);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            z-index: 10;
+        }
+
+        .skeleton-overlay {
+            pointer-events: none;
+        }
+
+        /* Notification styles */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3);
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            max-width: 300px;
+            font-size: 0.9em;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%);
+            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .notification.warning {
+            background: linear-gradient(135deg, #ffcc00 0%, #ff9900 100%);
+            box-shadow: 0 4px 20px rgba(255, 204, 0, 0.3);
+        }
+
+        /* Achievement badge */
+        .achievement-badge {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: linear-gradient(135deg, #ffd700 0%, #ffb700 100%);
+            color: #333;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            z-index: 1001;
+            transition: transform 0.3s ease;
+            box-shadow: 0 8px 32px rgba(255, 215, 0, 0.4);
+        }
+
+        .achievement-badge.show {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .achievement-badge h3 {
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        /* Fullscreen button */
+        .fullscreen-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            border: none;
+            color: white;
+            padding: 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            z-index: 10;
+        }
+
+        .fullscreen-btn:hover {
+            background: rgba(0, 0, 0, 0.9);
+        }
+    </style>
+</head>
+<body>
+    <div class="app-header">
+        <h1>🎯 Advanced Posture Analyzer</h1>
+        <p>AI-powered real-time posture detection and spine alignment monitoring</p>
+    </div>
+
+    <div class="main-container">
+        <div class="video-section">
+            <div class="video-wrapper">
+                <video id="video" autoplay muted></video>
+                <canvas id="canvas" class="skeleton-overlay"></canvas>
+                <div id="realtimeFeedback" class="realtime-feedback" style="display:none"></div>
+                <button id="fullscreenBtn" class="fullscreen-btn" title="Toggle Fullscreen">⛶</button>
+            </div>
+            
+            <div class="control-bar">
+                <button id="startBtn">🎥 Start Camera</button>
+                <button id="calibrateBtn" class="calibrate" disabled>📐 Calibrate Posture</button>
+                <button id="resetBtn" disabled>🔄 Reset Calibration</button>
+                <button id="stopBtn" class="stop" disabled>⏹ Stop</button>
+            </div>
+
+            <div id="statusMessage"></div>
+
+            <div class="tips-section">
+                <h3>💡 Posture Tips</h3>
+                <div id="dynamicTips">
+                    <div class="tip-item">
+                        <span class="tip-icon">✓</span>
+                        <span>Position your entire upper body in frame for accurate detection</span>
+                    </div>
+                    <div class="tip-item">
+                        <span class="tip-icon">✓</span>
+                        <span>Keep your shoulders relaxed and level</span>
+                    </div>
+                    <div class="tip-item">
+                        <span class="tip-icon">✓</span>
+                        <span>Align your ears over your shoulders, not forward</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="metrics-card">
+                <div class="score-display">
+                    <div class="score-value" id="mainScore">--</div>
+                    <div class="score-label" id="scoreLabel">Posture Score</div>
+                </div>
+
+                <div class="metric-item">
+                    <div class="metric-label">Spine Alignment</div>
+                    <div class="metric-value" id="spineAngle">--°</div>
+                    <div class="metric-bar">
+                        <div class="metric-fill" id="spineBar" style="width: 0%; background: linear-gradient(90deg, #00ff88, #00d4ff);"></div>
+                    </div>
+                </div>
+
+                <div class="metric-item">
+                    <div class="metric-label">Shoulder Balance</div>
+                    <div class="metric-value" id="shoulderBalance">--</div>
+                    <div class="metric-bar">
+                        <div class="metric-fill" id="shoulderBar" style="width: 0%; background: linear-gradient(90deg, #667eea, #764ba2);"></div>
+                    </div>
+                </div>
+
+                <div class="metric-item">
+                    <div class="metric-label">Head Forward Angle</div>
+                    <div class="metric-value" id="headAngle">--°</div>
+                    <div class="metric-bar">
+                        <div class="metric-fill" id="headBar" style="width: 0%; background: linear-gradient(90deg, #ff6b6b, #ee5a24);"></div>
+                    </div>
+                </div>
+
+                <div class="metric-item">
+                    <div class="metric-label">Confidence</div>
+                    <div class="metric-value" id="confidence">--</div>
+                </div>
+            </div>
+
+            <div class="metrics-card">
+                <h3>📊 Session Statistics</h3>
+                <div class="metric-item">
+                    <div class="metric-label">Average Score</div>
+                    <div class="metric-value" id="avgScore">--</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-label">Time in Good Posture</div>
+                    <div class="metric-value" id="goodPostureTime">--</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-label">Session Duration</div>
+                    <div class="metric-value" id="sessionTime">00:00</div>
+                </div>
+                
+                <svg class="history-chart" id="scoreChart" viewBox="0 0 300 100">
+                    <defs>
+                        <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:0.4" />
+                            <stop offset="100%" style="stop-color:#00d4ff;stop-opacity:0" />
+                        </linearGradient>
+                    </defs>
+                    <path id="chartPath" class="chart-area" d=""></path>
+                    <path id="chartLine" class="chart-line" d=""></path>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification system -->
+    <div id="notification" class="notification"></div>
+    <div id="achievementBadge" class="achievement-badge">
+        <h3 id="achievementTitle"></h3>
+        <p id="achievementText"></p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5.1635988162/pose.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3.1632432234/camera_utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@vercel/analytics@1.5.0/dist/index.umd.js"></script>
+    
+    <script>
+        // Initialize Vercel Analytics
+        if (typeof window.va !== 'undefined') {
+            window.va.init();
+        }
+        
+        // Analytics tracking functions
+        function trackEvent(eventName, properties = {}) {
+            if (typeof window.va !== 'undefined') {
+                window.va.track(eventName, properties);
+            }
+            // Also log to console for development
+            console.log('Analytics:', eventName, properties);
+        }
+        
+        // DOM Elements
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const calibrateBtn = document.getElementById('calibrateBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const statusMessage = document.getElementById('statusMessage');
+        const realtimeFeedback = document.getElementById('realtimeFeedback');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const notification = document.getElementById('notification');
+        const achievementBadge = document.getElementById('achievementBadge');
+        
+        // State variables
+        let camera = null;
+        let pose = null;
+        let calibratedData = null;
+        let scoreHistory = [];
+        let sessionStats = {
+            startTime: null,
+            totalScore: 0,
+            scoreCount: 0,
+            goodPostureTime: 0,
+            lastUpdateTime: null
+        };
+        
+        // Advanced posture tracking
+        let postureBuffer = [];
+        const BUFFER_SIZE = 10;
+        
+        // Achievement tracking
+        let achievements = {
+            firstGoodPosture: false,
+            fiveMinutesGood: false,
+            perfectScore: false,
+            fiftyReadings: false,
+            calibratedUser: false
+        };
+        
+        // Initialize MediaPipe Pose with optimized settings
+        function initPose() {
+            pose = new Pose({
+                locateFile: (file) => {
+                    return `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5.1635988162/${file}`;
+                }
+            });
+            
+            pose.setOptions({
+                modelComplexity: 2, // Higher accuracy
+                smoothLandmarks: true,
+                enableSegmentation: false,
+                minDetectionConfidence: 0.6,
+                minTrackingConfidence: 0.6
+            });
+            
+            pose.onResults(onResults);
+        }
+        
+        // Enhanced posture analysis
+        function analyzePosture(landmarks) {
+            // Critical points for posture
+            const nose = landmarks[0];
+            const leftEye = landmarks[2];
+            const rightEye = landmarks[5];
+            const leftEar = landmarks[7];
+            const rightEar = landmarks[8];
+            const leftShoulder = landmarks[11];
+            const rightShoulder = landmarks[12];
+            const leftElbow = landmarks[13];
+            const rightElbow = landmarks[14];
+            const leftHip = landmarks[23];
+            const rightHip = landmarks[24];
+            
+            // Calculate key metrics
+            const metrics = {};
+            
+            // 1. Spine alignment (vertical deviation)
+            const shoulderCenter = {
+                x: (leftShoulder.x + rightShoulder.x) / 2,
+                y: (leftShoulder.y + rightShoulder.y) / 2,
+                z: (leftShoulder.z + rightShoulder.z) / 2
+            };
+            
+            const hipCenter = {
+                x: (leftHip.x + rightHip.x) / 2,
+                y: (leftHip.y + rightHip.y) / 2,
+                z: (leftHip.z + rightHip.z) / 2
+            };
+            
+            const spineVector = {
+                x: shoulderCenter.x - hipCenter.x,
+                y: shoulderCenter.y - hipCenter.y
+            };
+            
+            metrics.spineAngle = Math.abs(Math.atan2(spineVector.x, Math.abs(spineVector.y)) * 180 / Math.PI);
+            
+            // 2. Shoulder levelness
+            const shoulderHeightDiff = Math.abs(leftShoulder.y - rightShoulder.y);
+            const shoulderWidth = Math.abs(leftShoulder.x - rightShoulder.x);
+            metrics.shoulderTilt = (shoulderHeightDiff / shoulderWidth) * 100;
+            
+            // 3. Head forward position (using ear-shoulder alignment)
+            const earCenter = {
+                x: (leftEar.x + rightEar.x) / 2,
+                y: (leftEar.y + rightEar.y) / 2
+            };
+            
+            const headForwardDistance = Math.abs(earCenter.x - shoulderCenter.x);
+            metrics.headForwardAngle = Math.atan2(headForwardDistance, Math.abs(earCenter.y - shoulderCenter.y)) * 180 / Math.PI;
+            
+            // 4. Shoulder roll (using z-coordinates)
+            metrics.shoulderRoll = Math.abs(leftShoulder.z - rightShoulder.z) * 100;
+            
+            // 5. Upper body symmetry
+            const leftArmAngle = calculateAngle(leftShoulder, leftElbow, leftHip);
+            const rightArmAngle = calculateAngle(rightShoulder, rightElbow, rightHip);
+            metrics.armSymmetry = Math.abs(leftArmAngle - rightArmAngle);
+            
+            // Calculate comprehensive score
+            let score = 100;
+            
+            // Spine alignment (most important)
+            if (metrics.spineAngle > 3) {
+                score -= Math.min(metrics.spineAngle * 2.5, 35);
+            }
+            
+            // Shoulder levelness
+            if (metrics.shoulderTilt > 3) {
+                score -= Math.min(metrics.shoulderTilt * 2, 20);
+            }
+            
+            // Head forward position
+            if (metrics.headForwardAngle > 15) {
+                score -= Math.min((metrics.headForwardAngle - 15) * 1.5, 25);
+            }
+            
+            // Shoulder roll
+            if (metrics.shoulderRoll > 5) {
+                score -= Math.min(metrics.shoulderRoll, 10);
+            }
+            
+            // Arm symmetry
+            if (metrics.armSymmetry > 20) {
+                score -= Math.min(metrics.armSymmetry / 4, 10);
+            }
+            
+            // Apply calibration if available
+            if (calibratedData) {
+                const calibrationScore = compareToCalibration(landmarks, calibratedData);
+                score = (score * 0.4 + calibrationScore * 0.6); // Weighted average
+            }
+            
+            metrics.score = Math.max(0, Math.round(score));
+            metrics.confidence = landmarks[0].visibility > 0.8 ? 'High' : 'Medium';
+            
+            return metrics;
+        }
+        
+        // Calculate angle between three points
+        function calculateAngle(p1, p2, p3) {
+            const v1 = { x: p1.x - p2.x, y: p1.y - p2.y };
+            const v2 = { x: p3.x - p2.x, y: p3.y - p2.y };
+            const dot = v1.x * v2.x + v1.y * v2.y;
+            const det = v1.x * v2.y - v1.y * v2.x;
+            return Math.abs(Math.atan2(det, dot) * 180 / Math.PI);
+        }
+        
+        // Compare current posture to calibrated reference
+        function compareToCalibration(current, reference) {
+            const keyPoints = [0, 7, 8, 11, 12, 13, 14, 23, 24];
+            let totalDeviation = 0;
+            
+            for (let i of keyPoints) {
+                const dx = current[i].x - reference[i].x;
+                const dy = current[i].y - reference[i].y;
+                const dz = current[i].z - reference[i].z;
+                totalDeviation += Math.sqrt(dx*dx + dy*dy + dz*dz);
+            }
+            
+            const normalizedDeviation = totalDeviation / keyPoints.length;
+            return Math.max(0, 100 - normalizedDeviation * 500);
+        }
+        
+        // Smooth metrics using moving average
+        function smoothMetrics(metrics) {
+            postureBuffer.push(metrics);
+            if (postureBuffer.length > BUFFER_SIZE) {
+                postureBuffer.shift();
+            }
+            
+            const smoothed = {};
+            const keys = Object.keys(metrics);
+            
+            keys.forEach(key => {
+                if (typeof metrics[key] === 'number') {
+                    const values = postureBuffer.map(m => m[key]);
+                    smoothed[key] = values.reduce((a, b) => a + b, 0) / values.length;
+                } else {
+                    smoothed[key] = metrics[key];
+                }
+            });
+            
+            return smoothed;
+        }
+        
+        // Process pose detection results
+        function onResults(results) {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            if (results.poseLandmarks) {
+                const metrics = analyzePosture(results.poseLandmarks);
+                const smoothedMetrics = smoothMetrics(metrics);
+                
+                drawEnhancedSkeleton(results.poseLandmarks, smoothedMetrics.score);
+                updateUI(smoothedMetrics);
+                updateSessionStats(smoothedMetrics);
+                updateScoreHistory(smoothedMetrics.score);
+                provideFeedback(smoothedMetrics);
+                checkAchievements(smoothedMetrics);
+                
+                showStatus('', 'success');
+            } else {
+                showStatus('Adjust your position - full upper body should be visible', 'alert');
+            }
+        }
+        
+        // Enhanced skeleton visualization
+        function drawEnhancedSkeleton(landmarks, score) {
+            // Determine color based on score
+            let primaryColor, glowColor;
+            if (score >= 80) {
+                primaryColor = '#00ff88';
+                glowColor = 'rgba(0, 255, 136, 0.3)';
+            } else if (score >= 60) {
+                primaryColor = '#ffcc00';
+                glowColor = 'rgba(255, 204, 0, 0.3)';
+            } else {
+                primaryColor = '#ff4444';
+                glowColor = 'rgba(255, 68, 68, 0.3)';
+            }
+            
+            // Add glow effect
+            ctx.shadowColor = glowColor;
+            ctx.shadowBlur = 10;
+            
+            // Draw connections with varying thickness
+            const connections = [
+                // Head
+                { points: [0, 7], width: 2 },
+                { points: [7, 8], width: 2 },
+                { points: [8, 0], width: 2 },
+                // Torso
+                { points: [11, 12], width: 4 }, // Shoulders
+                { points: [11, 23], width: 3 }, // Left side
+                { points: [12, 24], width: 3 }, // Right side
+                { points: [23, 24], width: 4 }, // Hips
+                // Arms
+                { points: [11, 13], width: 2 },
+                { points: [13, 15], width: 2 },
+                { points: [12, 14], width: 2 },
+                { points: [14, 16], width: 2 },
+            ];
+            
+            connections.forEach(conn => {
+                const [start, end] = conn.points;
+                if (landmarks[start] && landmarks[end]) {
+                    ctx.strokeStyle = primaryColor;
+                    ctx.lineWidth = conn.width;
+                    ctx.lineCap = 'round';
+                    ctx.beginPath();
+                    ctx.moveTo(landmarks[start].x * canvas.width, landmarks[start].y * canvas.height);
+                    ctx.lineTo(landmarks[end].x * canvas.width, landmarks[end].y * canvas.height);
+                    ctx.stroke();
+                }
+            });
+            
+            // Draw spine with gradient
+            const shoulderMid = {
+                x: (landmarks[11].x + landmarks[12].x) / 2,
+                y: (landmarks[11].y + landmarks[12].y) / 2
+            };
+            const hipMid = {
+                x: (landmarks[23].x + landmarks[24].x) / 2,
+                y: (landmarks[23].y + landmarks[24].y) / 2
+            };
+            
+            const gradient = ctx.createLinearGradient(
+                shoulderMid.x * canvas.width, shoulderMid.y * canvas.height,
+                hipMid.x * canvas.width, hipMid.y * canvas.height
+            );
+            gradient.addColorStop(0, primaryColor);
+            gradient.addColorStop(1, primaryColor + '88');
+            
+            ctx.strokeStyle = gradient;
+            ctx.lineWidth = 6;
+            ctx.beginPath();
+            ctx.moveTo(shoulderMid.x * canvas.width, shoulderMid.y * canvas.height);
+            ctx.lineTo(hipMid.x * canvas.width, hipMid.y * canvas.height);
+            ctx.stroke();
+            
+            // Draw key points
+            ctx.shadowBlur = 5;
+            const keyPoints = [0, 7, 8, 11, 12, 13, 14, 15, 16, 23, 24];
+            keyPoints.forEach(i => {
+                ctx.fillStyle = primaryColor;
+                ctx.beginPath();
+                ctx.arc(
+                    landmarks[i].x * canvas.width, 
+                    landmarks[i].y * canvas.height, 
+                    landmarks[i].visibility > 0.8 ? 6 : 4, 
+                    0, 
+                    2 * Math.PI
+                );
+                ctx.fill();
+            });
+            
+            ctx.shadowBlur = 0;
+        }
+        
+        // Update UI elements
+        function updateUI(metrics) {
+            // Main score
+            const scoreElement = document.getElementById('mainScore');
+            scoreElement.textContent = metrics.score + '%';
+            scoreElement.className = 'score-value';
+            if (metrics.score >= 80) {
+                scoreElement.classList.add('good');
+                document.getElementById('scoreLabel').textContent = 'Excellent Posture';
+            } else if (metrics.score >= 60) {
+                scoreElement.classList.add('fair');
+                document.getElementById('scoreLabel').textContent = 'Fair Posture';
+            } else {
+                scoreElement.classList.add('poor');
+                document.getElementById('scoreLabel').textContent = 'Needs Improvement';
+            }
+            
+            // Individual metrics
+            document.getElementById('spineAngle').textContent = metrics.spineAngle.toFixed(1) + '°';
+            document.getElementById('spineBar').style.width = Math.max(0, 100 - metrics.spineAngle * 3) + '%';
+            
+            const shoulderStatus = metrics.shoulderTilt < 3 ? 'Balanced' : 
+                                   metrics.shoulderTilt < 6 ? 'Slightly Uneven' : 'Uneven';
+            document.getElementById('shoulderBalance').textContent = shoulderStatus;
+            document.getElementById('shoulderBar').style.width = Math.max(0, 100 - metrics.shoulderTilt * 10) + '%';
+            
+            document.getElementById('headAngle').textContent = metrics.headForwardAngle.toFixed(1) + '°';
+            document.getElementById('headBar').style.width = Math.max(0, 100 - metrics.headForwardAngle * 2) + '%';
+            
+            document.getElementById('confidence').textContent = metrics.confidence;
+        }
+        
+        // Update session statistics
+        function updateSessionStats(metrics) {
+            const now = Date.now();
+            
+            if (!sessionStats.startTime) {
+                sessionStats.startTime = now;
+                sessionStats.lastUpdateTime = now;
+            }
+            
+            sessionStats.totalScore += metrics.score;
+            sessionStats.scoreCount++;
+            
+            if (metrics.score >= 80) {
+                sessionStats.goodPostureTime += (now - sessionStats.lastUpdateTime) / 1000;
+            }
+            
+            sessionStats.lastUpdateTime = now;
+            
+            // Update displays
+            const avgScore = Math.round(sessionStats.totalScore / sessionStats.scoreCount);
+            document.getElementById('avgScore').textContent = avgScore + '%';
+            
+            const goodTime = Math.round(sessionStats.goodPostureTime);
+            const minutes = Math.floor(goodTime / 60);
+            const seconds = goodTime % 60;
+            document.getElementById('goodPostureTime').textContent = 
+                `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            const totalTime = Math.round((now - sessionStats.startTime) / 1000);
+            const totalMinutes = Math.floor(totalTime / 60);
+            const totalSeconds = totalTime % 60;
+            document.getElementById('sessionTime').textContent = 
+                `${totalMinutes.toString().padStart(2, '0')}:${totalSeconds.toString().padStart(2, '0')}`;
+        }
+        
+        // Update score history chart
+        function updateScoreHistory(score) {
+            scoreHistory.push(score);
+            if (scoreHistory.length > 50) {
+                scoreHistory.shift();
+            }
+            
+            // Track posture milestones
+            if (scoreHistory.length % 20 === 0) {
+                const recentAvg = scoreHistory.slice(-10).reduce((a, b) => a + b, 0) / 10;
+                trackEvent('posture_milestone', {
+                    readings_count: scoreHistory.length,
+                    recent_average_score: Math.round(recentAvg),
+                    current_score: score,
+                    timestamp: new Date().toISOString()
+                });
+            }
+            
+            if (scoreHistory.length > 1) {
+                const width = 300;
+                const height = 100;
+                const step = width / (scoreHistory.length - 1);
+                
+                let pathData = '';
+                let lineData = '';
+                
+                scoreHistory.forEach((value, index) => {
+                    const x = index * step;
+                    const y = height - (value / 100 * height);
+                    
+                    if (index === 0) {
+                        pathData = `M ${x} ${y}`;
+                        lineData = `M ${x} ${y}`;
+                    } else {
+                        pathData += ` L ${x} ${y}`;
+                        lineData += ` L ${x} ${y}`;
+                    }
+                });
+                
+                pathData += ` L ${width} ${height} L 0 ${height} Z`;
+                
+                document.getElementById('chartPath').setAttribute('d', pathData);
+                document.getElementById('chartLine').setAttribute('d', lineData);
+            }
+        }
+        
+        // Provide real-time feedback
+        function provideFeedback(metrics) {
+            const feedback = [];
+            
+            if (metrics.spineAngle > 10) {
+                feedback.push('⚠️ Straighten your spine');
+            }
+            if (metrics.shoulderTilt > 5) {
+                feedback.push('⚠️ Level your shoulders');
+            }
+            if (metrics.headForwardAngle > 20) {
+                feedback.push('⚠️ Pull your head back');
+            }
+            
+            if (feedback.length > 0) {
+                realtimeFeedback.innerHTML = feedback.join('<br>');
+                realtimeFeedback.style.display = 'block';
+            } else if (metrics.score >= 80) {
+                realtimeFeedback.innerHTML = '✅ Great posture!';
+                realtimeFeedback.style.display = 'block';
+            } else {
+                realtimeFeedback.style.display = 'none';
+            }
+            
+            // Update dynamic tips based on current posture
+            updateDynamicTips(metrics);
+        }
+        
+        // Update tips based on current posture issues
+        function updateDynamicTips(metrics) {
+            const tipsContainer = document.getElementById('dynamicTips');
+            const tips = [];
+            
+            if (metrics.spineAngle > 10) {
+                tips.push({
+                    icon: '📏',
+                    text: 'Imagine a string pulling you up from the top of your head'
+                });
+            }
+            
+            if (metrics.shoulderTilt > 5) {
+                tips.push({
+                    icon: '⚖️',
+                    text: 'Check if your computer screen is centered - uneven shoulders often come from looking to one side'
+                });
+            }
+            
+            if (metrics.headForwardAngle > 20) {
+                tips.push({
+                    icon: '👂',
+                    text: 'Your ears should align vertically with your shoulders'
+                });
+            }
+            
+            if (metrics.score >= 80) {
+                tips.push({
+                    icon: '🌟',
+                    text: 'Excellent! Maintain this position and take breaks every 30 minutes'
+                });
+                tips.push({
+                    icon: '💪',
+                    text: 'Consider doing shoulder rolls and neck stretches periodically'
+                });
+            }
+            
+            if (tips.length === 0) {
+                tips.push({
+                    icon: '✓',
+                    text: 'Keep your feet flat on the floor, hip-width apart'
+                });
+                tips.push({
+                    icon: '✓',
+                    text: 'Your screen should be at eye level to prevent neck strain'
+                });
+            }
+            
+            tipsContainer.innerHTML = tips.map(tip => `
+                <div class="tip-item">
+                    <span class="tip-icon">${tip.icon}</span>
+                    <span>${tip.text}</span>
+                </div>
+            `).join('');
+        }
+        
+        // Show status messages
+        function showStatus(message, type = 'alert') {
+            if (!message) {
+                statusMessage.innerHTML = '';
+                return;
+            }
+            
+            let className = 'alert-box';
+            if (type === 'error') className += ' error';
+            if (type === 'success') className += ' success';
+            
+            statusMessage.innerHTML = `<div class="${className}">${message}</div>`;
+        }
+        
+        // Show notification
+        function showNotification(message, type = 'info', duration = 4000) {
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, duration);
+        }
+        
+        // Show achievement
+        function showAchievement(title, text) {
+            document.getElementById('achievementTitle').textContent = title;
+            document.getElementById('achievementText').textContent = text;
+            achievementBadge.classList.add('show');
+            
+            setTimeout(() => {
+                achievementBadge.classList.remove('show');
+            }, 3000);
+            
+            trackEvent('achievement_unlocked', {
+                achievement_title: title,
+                timestamp: new Date().toISOString()
+            });
+        }
+        
+        // Check for achievements
+        function checkAchievements(metrics) {
+            // First good posture
+            if (!achievements.firstGoodPosture && metrics.score >= 80) {
+                achievements.firstGoodPosture = true;
+                showAchievement('🎉 Great Start!', 'You achieved excellent posture for the first time!');
+            }
+            
+            // Perfect score
+            if (!achievements.perfectScore && metrics.score >= 95) {
+                achievements.perfectScore = true;
+                showAchievement('⭐ Perfect Posture!', 'You achieved a 95+ posture score!');
+            }
+            
+            // 50 readings milestone
+            if (!achievements.fiftyReadings && scoreHistory.length >= 50) {
+                achievements.fiftyReadings = true;
+                showAchievement('📊 Data Collector!', 'You\'ve completed 50 posture readings!');
+            }
+            
+            // 5 minutes of good posture
+            if (!achievements.fiveMinutesGood && sessionStats.goodPostureTime >= 300) {
+                achievements.fiveMinutesGood = true;
+                showAchievement('⏰ Consistency Master!', 'You maintained good posture for 5 minutes!');
+            }
+        }
+        
+        // Toggle fullscreen
+        function toggleFullscreen() {
+            const videoWrapper = document.querySelector('.video-wrapper');
+            if (!document.fullscreenElement) {
+                videoWrapper.requestFullscreen().catch(err => {
+                    showNotification('Fullscreen not supported', 'warning');
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+        
+        // Start camera
+        async function startCamera() {
+            try {
+                showStatus('Initializing camera and AI model...', 'alert');
+                
+                // Track session start
+                trackEvent('session_started', {
+                    timestamp: new Date().toISOString(),
+                    device: navigator.userAgent
+                });
+                
+                if (!pose) {
+                    initPose();
+                }
+                
+                camera = new Camera(video, {
+                    onFrame: async () => {
+                        if (pose) {
+                            await pose.send({image: video});
+                        }
+                    },
+                    width: 1280,
+                    height: 720,
+                    facingMode: 'user'
+                });
+                
+                await camera.start();
+                
+                startBtn.disabled = true;
+                stopBtn.disabled = false;
+                calibrateBtn.disabled = false;
+                resetBtn.disabled = false;
+                
+                showStatus('✅ Camera active - Position yourself in frame', 'success');
+                setTimeout(() => showStatus(''), 3000);
+                
+                // Reset session stats
+                sessionStats = {
+                    startTime: Date.now(),
+                    totalScore: 0,
+                    scoreCount: 0,
+                    goodPostureTime: 0,
+                    lastUpdateTime: Date.now()
+                };
+                
+                // Track successful camera initialization
+                trackEvent('camera_initialized', {
+                    timestamp: new Date().toISOString()
+                });
+                
+                showNotification('Camera started! Position yourself in frame', 'success');
+                
+            } catch (error) {
+                console.error('Camera error:', error);
+                showStatus('❌ Failed to start camera. Please ensure camera permissions are granted.', 'error');
+                
+                // Track camera error
+                trackEvent('camera_error', {
+                    error: error.message,
+                    timestamp: new Date().toISOString()
+                });
+            }
+        }
+        
+        // Stop camera
+        function stopCamera() {
+            // Track session end with analytics
+            if (sessionStats.startTime) {
+                const sessionDuration = (Date.now() - sessionStats.startTime) / 1000;
+                const avgScore = sessionStats.scoreCount > 0 ? Math.round(sessionStats.totalScore / sessionStats.scoreCount) : 0;
+                
+                trackEvent('session_ended', {
+                    duration_seconds: Math.round(sessionDuration),
+                    average_score: avgScore,
+                    good_posture_time: Math.round(sessionStats.goodPostureTime),
+                    total_readings: sessionStats.scoreCount,
+                    timestamp: new Date().toISOString()
+                });
+            }
+            
+            if (camera) {
+                camera.stop();
+                camera = null;
+            }
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+            calibrateBtn.disabled = true;
+            resetBtn.disabled = true;
+            
+            // Reset displays
+            document.getElementById('mainScore').textContent = '--';
+            document.getElementById('scoreLabel').textContent = 'Posture Score';
+            document.getElementById('spineAngle').textContent = '--°';
+            document.getElementById('shoulderBalance').textContent = '--';
+            document.getElementById('headAngle').textContent = '--°';
+            document.getElementById('confidence').textContent = '--';
+            
+            // Reset bars
+            document.getElementById('spineBar').style.width = '0%';
+            document.getElementById('shoulderBar').style.width = '0%';
+            document.getElementById('headBar').style.width = '0%';
+            
+            realtimeFeedback.style.display = 'none';
+            
+            showStatus('Camera stopped', 'alert');
+            
+            // Clear history
+            scoreHistory = [];
+            postureBuffer = [];
+        }
+        
+        // Calibrate good posture
+        function calibratePosture() {
+            if (!pose) return;
+            
+            // Track calibration start
+            trackEvent('calibration_started', {
+                timestamp: new Date().toISOString()
+            });
+            
+            showStatus('📸 Hold your best posture for 3 seconds...', 'alert');
+            
+            let countdown = 3;
+            const countdownInterval = setInterval(() => {
+                countdown--;
+                if (countdown > 0) {
+                    showStatus(`📸 Calibrating in ${countdown}...`, 'alert');
+                } else {
+                    clearInterval(countdownInterval);
+                    
+                    // Capture current frame
+                    pose.onResults((results) => {
+                        if (results.poseLandmarks) {
+                            calibratedData = JSON.parse(JSON.stringify(results.poseLandmarks));
+                            
+                            showStatus('✅ Posture calibrated! The system will now track deviations from this position.', 'success');
+                            
+                            // Store calibration metrics
+                            const calibrationMetrics = analyzePosture(calibratedData);
+                            console.log('Calibration metrics:', calibrationMetrics);
+                            
+                            // Track successful calibration
+                            trackEvent('calibration_completed', {
+                                baseline_score: calibrationMetrics.score,
+                                spine_angle: calibrationMetrics.spineAngle,
+                                shoulder_tilt: calibrationMetrics.shoulderTilt,
+                                head_forward_angle: calibrationMetrics.headForwardAngle,
+                                timestamp: new Date().toISOString()
+                            });
+                            
+                            // Achievement for calibrating
+                            if (!achievements.calibratedUser) {
+                                achievements.calibratedUser = true;
+                                showAchievement('🎯 Setup Complete!', 'You calibrated your personal posture baseline!');
+                            }
+                            
+                            // Restore normal processing
+                            setTimeout(() => {
+                                pose.onResults(onResults);
+                                showStatus('');
+                            }, 3000);
+                        }
+                    });
+                }
+            }, 1000);
+        }
+        
+        // Reset calibration
+        function resetCalibration() {
+            // Track calibration reset
+            trackEvent('calibration_reset', {
+                timestamp: new Date().toISOString()
+            });
+            
+            calibratedData = null;
+            postureBuffer = [];
+            showStatus('Calibration reset - Using default posture standards', 'alert');
+            setTimeout(() => showStatus(''), 3000);
+        }
+        
+        // Event listeners
+        startBtn.addEventListener('click', startCamera);
+        stopBtn.addEventListener('click', stopCamera);
+        calibrateBtn.addEventListener('click', calibratePosture);
+        resetBtn.addEventListener('click', resetCalibration);
+        fullscreenBtn.addEventListener('click', toggleFullscreen);
+        
+        // Initialize
+        window.addEventListener('load', () => {
+            showStatus('Click "Start Camera" to begin posture analysis', 'alert');
+            
+            // Track page load
+            trackEvent('app_loaded', {
+                user_agent: navigator.userAgent,
+                screen_resolution: `${screen.width}x${screen.height}`,
+                timestamp: new Date().toISOString()
+            });
+        });
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === ' ' && !calibrateBtn.disabled) {
+                e.preventDefault();
+                calibratePosture();
+            }
+            if (e.key === 'Escape' && !stopBtn.disabled) {
+                stopCamera();
+            }
+        });
+    </script>
+</body>
+</html>
