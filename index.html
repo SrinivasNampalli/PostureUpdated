@@ -10,6 +10,7 @@
     <meta property="og:description" content="AI-powered real-time posture detection and correction">
     <meta property="og:type" content="website">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -18,29 +19,81 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #0f0f1e;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 25%, #16213e 50%, #1a1a2e 75%, #0a0a1a 100%);
+            background-attachment: fixed;
             min-height: 100vh;
-            color: #fff;
+            color: #e8e9f3;
             overflow-x: hidden;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(59, 130, 246, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 80%, rgba(99, 102, 241, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 40% 60%, rgba(168, 85, 247, 0.06) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: -1;
         }
 
         .app-header {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background: linear-gradient(135deg, 
+                rgba(15, 23, 42, 0.95) 0%, 
+                rgba(30, 41, 59, 0.95) 50%, 
+                rgba(15, 23, 42, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(59, 130, 246, 0.2);
             padding: 20px;
             text-align: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 32px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(59, 130, 246, 0.05) 50%, transparent 70%);
+            animation: shimmer 4s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
         }
 
         .app-header h1 {
             font-size: 2em;
-            font-weight: 600;
-            margin-bottom: 5px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.025em;
         }
 
         .app-header p {
-            opacity: 0.9;
+            opacity: 0.8;
             font-size: 0.95em;
+            position: relative;
+            z-index: 1;
+            color: #94a3b8;
+            font-weight: 400;
         }
 
         .main-container {
@@ -59,10 +112,14 @@
         }
 
         .video-section {
-            background: #1a1a2e;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.9) 0%, rgba(44, 27, 105, 0.9) 100%);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 
+                0 16px 40px rgba(0,0,0,0.4),
+                inset 0 1px 0 rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
         .video-wrapper {
@@ -70,9 +127,12 @@
             width: 100%;
             max-width: 800px;
             margin: 0 auto;
-            border-radius: 8px;
+            border-radius: 12px;
             overflow: hidden;
-            background: #000;
+            background: linear-gradient(135deg, #000000 0%, #1a1a2e 100%);
+            box-shadow: 
+                0 8px 32px rgba(0,0,0,0.5),
+                inset 0 0 0 1px rgba(102, 126, 234, 0.2);
         }
 
         video, canvas {
@@ -96,21 +156,43 @@
 
         button {
             flex: 1;
-            min-width: 120px;
-            padding: 12px 20px;
+            min-width: 130px;
+            padding: 14px 24px;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             font-size: 14px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 4px 15px rgba(102, 126, 234, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        button:hover:not(:disabled)::before {
+            left: 100%;
         }
 
         button:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 
+                0 8px 25px rgba(102, 126, 234, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
         }
 
         button:disabled {
@@ -119,11 +201,29 @@
         }
 
         button.calibrate {
-            background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+            background: linear-gradient(135deg, #00d4ff 0%, #5b2c87 50%, #0099cc 100%);
+            box-shadow: 
+                0 4px 15px rgba(0, 212, 255, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        button.calibrate:hover:not(:disabled) {
+            box-shadow: 
+                0 8px 25px rgba(0, 212, 255, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
         }
 
         button.stop {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8a80 50%, #ee5a24 100%);
+            box-shadow: 
+                0 4px 15px rgba(255, 107, 107, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        button.stop:hover:not(:disabled) {
+            box-shadow: 
+                0 8px 25px rgba(255, 107, 107, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
         }
 
         .sidebar {
@@ -133,16 +233,44 @@
         }
 
         .metrics-card {
-            background: #1a1a2e;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.95) 0%, rgba(44, 27, 105, 0.95) 100%);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 
+                0 12px 40px rgba(0,0,0,0.4),
+                inset 0 1px 0 rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metrics-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb, #00d4ff);
+            animation: rainbow 3s linear infinite;
+        }
+
+        @keyframes rainbow {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
 
         .metrics-card h3 {
-            font-size: 1.1em;
-            margin-bottom: 15px;
-            color: #00d4ff;
+            font-size: 1.2em;
+            margin-bottom: 18px;
+            background: linear-gradient(135deg, #00d4ff, #667eea, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
         }
 
         .metric-item {
@@ -180,10 +308,33 @@
 
         .score-display {
             text-align: center;
-            padding: 25px;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
-            border-radius: 12px;
-            margin-bottom: 20px;
+            padding: 28px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 50%, rgba(240, 147, 251, 0.3) 100%);
+            border-radius: 16px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 8px 32px rgba(102, 126, 234, 0.2),
+                inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        .score-display::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #00d4ff);
+            border-radius: 16px;
+            z-index: -1;
+            animation: rotate 4s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .score-value {
@@ -370,116 +521,831 @@
         .fullscreen-btn:hover {
             background: rgba(0, 0, 0, 0.9);
         }
+
+        /* Settings Panel */
+        .settings-panel {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 380px;
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.95) 0%, rgba(44, 27, 105, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            border-left: 1px solid rgba(255,255,255,0.1);
+            padding: 30px;
+            z-index: 1000;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .settings-panel.open {
+            right: 0;
+        }
+
+        .settings-panel h2 {
+            color: #f093fb;
+            margin-bottom: 30px;
+            font-size: 1.5em;
+            font-weight: 700;
+        }
+
+        .setting-group {
+            margin-bottom: 25px;
+        }
+
+        .setting-label {
+            display: block;
+            color: #e0e0e0;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .setting-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 14px;
+        }
+
+        .setting-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .switch {
+            position: relative;
+            width: 50px;
+            height: 24px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 24px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .switch.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .switch::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+
+        .switch.active::before {
+            transform: translateX(26px);
+        }
+
+        .settings-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            z-index: 1001;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .settings-btn:hover {
+            transform: rotate(90deg);
+            transition: transform 0.3s;
+        }
+
+        /* Break Reminder Modal */
+        .break-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .break-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .break-modal-content {
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.95) 0%, rgba(44, 27, 105, 0.95) 100%);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            margin: 20px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .break-modal h3 {
+            color: #f093fb;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+
+        .break-modal p {
+            color: #e0e0e0;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .break-exercises {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .exercise-item {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .exercise-item .emoji {
+            font-size: 2em;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .exercise-item .name {
+            font-size: 0.9em;
+            color: #e0e0e0;
+        }
+
+        /* Session History */
+        .history-panel {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .history-date {
+            color: #888;
+            font-size: 0.9em;
+        }
+
+        .history-score {
+            font-weight: bold;
+        }
+
+        /* Navigation Styles */
+        .header-nav {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 24px;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            padding: 6px;
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            max-width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .nav-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            background: transparent;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 14px;
+            font-weight: 500;
+            min-width: auto;
+            flex: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 25px;
+        }
+
+        .nav-btn:hover:not(.active) {
+            color: #e2e8f0;
+            background: rgba(59, 130, 246, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+            font-weight: 600;
+        }
+
+        .nav-btn.active::before {
+            opacity: 1;
+        }
+
+        /* Page Content */
+        .page-content {
+            display: none;
+        }
+
+        .page-content.active {
+            display: block;
+        }
+
+        /* Push-up specific styles */
+        .rep-counter {
+            font-size: 4em;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .exercise-status {
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .exercise-status.up {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 212, 255, 0.2));
+            color: #00ff88;
+        }
+
+        .exercise-status.down {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(238, 90, 36, 0.2));
+            color: #ff6b6b;
+        }
+
+        .exercise-status.ready {
+            background: linear-gradient(135deg, rgba(255, 204, 0, 0.2), rgba(255, 153, 0, 0.2));
+            color: #ffcc00;
+        }
     </style>
 </head>
 <body>
     <div class="app-header">
-        <h1>🎯 Advanced Posture Analyzer</h1>
-        <p>AI-powered real-time posture detection and spine alignment monitoring</p>
+        <nav class="header-nav">
+            <button id="postureNavBtn" class="nav-btn active">🎯 Posture</button>
+            <button id="pushupNavBtn" class="nav-btn">💪 Push-ups</button>
+            <button id="squatNavBtn" class="nav-btn">🏋️ Squats</button>
+            <button id="plankNavBtn" class="nav-btn">🤸 Plank</button>
+            <button id="aboutNavBtn" class="nav-btn">ℹ️ About</button>
+            <button id="helpNavBtn" class="nav-btn">❓ Help</button>
+        </nav>
+        <div id="pageTitle">
+            <h1>🎯 Advanced Posture Analyzer</h1>
+            <p>AI-powered real-time posture detection and spine alignment monitoring</p>
+        </div>
     </div>
 
-    <div class="main-container">
-        <div class="video-section">
-            <div class="video-wrapper">
-                <video id="video" autoplay muted></video>
-                <canvas id="canvas" class="skeleton-overlay"></canvas>
-                <div id="realtimeFeedback" class="realtime-feedback" style="display:none"></div>
-                <button id="fullscreenBtn" class="fullscreen-btn" title="Toggle Fullscreen">⛶</button>
-            </div>
-            
-            <div class="control-bar">
-                <button id="startBtn">🎥 Start Camera</button>
-                <button id="calibrateBtn" class="calibrate" disabled>📐 Calibrate Posture</button>
-                <button id="resetBtn" disabled>🔄 Reset Calibration</button>
-                <button id="stopBtn" class="stop" disabled>⏹ Stop</button>
-            </div>
-
-            <div id="statusMessage"></div>
-
-            <div class="tips-section">
-                <h3>💡 Posture Tips</h3>
-                <div id="dynamicTips">
-                    <div class="tip-item">
-                        <span class="tip-icon">✓</span>
-                        <span>Position your entire upper body in frame for accurate detection</span>
-                    </div>
-                    <div class="tip-item">
-                        <span class="tip-icon">✓</span>
-                        <span>Keep your shoulders relaxed and level</span>
-                    </div>
-                    <div class="tip-item">
-                        <span class="tip-icon">✓</span>
-                        <span>Align your ears over your shoulders, not forward</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="sidebar">
-            <div class="metrics-card">
-                <div class="score-display">
-                    <div class="score-value" id="mainScore">--</div>
-                    <div class="score-label" id="scoreLabel">Posture Score</div>
-                </div>
-
-                <div class="metric-item">
-                    <div class="metric-label">Spine Alignment</div>
-                    <div class="metric-value" id="spineAngle">--°</div>
-                    <div class="metric-bar">
-                        <div class="metric-fill" id="spineBar" style="width: 0%; background: linear-gradient(90deg, #00ff88, #00d4ff);"></div>
-                    </div>
-                </div>
-
-                <div class="metric-item">
-                    <div class="metric-label">Shoulder Balance</div>
-                    <div class="metric-value" id="shoulderBalance">--</div>
-                    <div class="metric-bar">
-                        <div class="metric-fill" id="shoulderBar" style="width: 0%; background: linear-gradient(90deg, #667eea, #764ba2);"></div>
-                    </div>
-                </div>
-
-                <div class="metric-item">
-                    <div class="metric-label">Head Forward Angle</div>
-                    <div class="metric-value" id="headAngle">--°</div>
-                    <div class="metric-bar">
-                        <div class="metric-fill" id="headBar" style="width: 0%; background: linear-gradient(90deg, #ff6b6b, #ee5a24);"></div>
-                    </div>
-                </div>
-
-                <div class="metric-item">
-                    <div class="metric-label">Confidence</div>
-                    <div class="metric-value" id="confidence">--</div>
-                </div>
-            </div>
-
-            <div class="metrics-card">
-                <h3>📊 Session Statistics</h3>
-                <div class="metric-item">
-                    <div class="metric-label">Average Score</div>
-                    <div class="metric-value" id="avgScore">--</div>
-                </div>
-                <div class="metric-item">
-                    <div class="metric-label">Time in Good Posture</div>
-                    <div class="metric-value" id="goodPostureTime">--</div>
-                </div>
-                <div class="metric-item">
-                    <div class="metric-label">Session Duration</div>
-                    <div class="metric-value" id="sessionTime">00:00</div>
+    <!-- Posture Page -->
+    <div id="posturePage" class="page-content active">
+        <div class="main-container">
+            <div class="video-section">
+                <div class="video-wrapper">
+                    <video id="video" autoplay muted></video>
+                    <canvas id="canvas" class="skeleton-overlay"></canvas>
+                    <div id="realtimeFeedback" class="realtime-feedback" style="display:none"></div>
+                    <button id="fullscreenBtn" class="fullscreen-btn" title="Toggle Fullscreen">⛶</button>
                 </div>
                 
-                <svg class="history-chart" id="scoreChart" viewBox="0 0 300 100">
-                    <defs>
-                        <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:0.4" />
-                            <stop offset="100%" style="stop-color:#00d4ff;stop-opacity:0" />
-                        </linearGradient>
-                    </defs>
-                    <path id="chartPath" class="chart-area" d=""></path>
-                    <path id="chartLine" class="chart-line" d=""></path>
-                </svg>
+                <div class="control-bar">
+                    <button id="startBtn">🎥 Start Camera</button>
+                    <button id="calibrateBtn" class="calibrate" disabled>📐 Calibrate Posture</button>
+                    <button id="resetBtn" disabled>🔄 Reset Calibration</button>
+                    <button id="stopBtn" class="stop" disabled>⏹ Stop</button>
+                </div>
+
+                <div id="statusMessage"></div>
+
+                <div class="tips-section">
+                    <h3>💡 Posture Tips</h3>
+                    <div id="dynamicTips">
+                        <div class="tip-item">
+                            <span class="tip-icon">✓</span>
+                            <span>Position your entire upper body in frame for accurate detection</span>
+                        </div>
+                        <div class="tip-item">
+                            <span class="tip-icon">✓</span>
+                            <span>Keep your shoulders relaxed and level</span>
+                        </div>
+                        <div class="tip-item">
+                            <span class="tip-icon">✓</span>
+                            <span>Align your ears over your shoulders, not forward</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="metrics-card">
+                    <div class="score-display">
+                        <div class="score-value" id="mainScore">--</div>
+                        <div class="score-label" id="scoreLabel">Posture Score</div>
+                    </div>
+
+                    <div class="metric-item">
+                        <div class="metric-label">Spine Alignment</div>
+                        <div class="metric-value" id="spineAngle">--°</div>
+                        <div class="metric-bar">
+                            <div class="metric-fill" id="spineBar" style="width: 0%; background: linear-gradient(90deg, #00ff88, #00d4ff);"></div>
+                        </div>
+                    </div>
+
+                    <div class="metric-item">
+                        <div class="metric-label">Shoulder Balance</div>
+                        <div class="metric-value" id="shoulderBalance">--</div>
+                        <div class="metric-bar">
+                            <div class="metric-fill" id="shoulderBar" style="width: 0%; background: linear-gradient(90deg, #667eea, #764ba2);"></div>
+                        </div>
+                    </div>
+
+                    <div class="metric-item">
+                        <div class="metric-label">Head Forward Angle</div>
+                        <div class="metric-value" id="headAngle">--°</div>
+                        <div class="metric-bar">
+                            <div class="metric-fill" id="headBar" style="width: 0%; background: linear-gradient(90deg, #ff6b6b, #ee5a24);"></div>
+                        </div>
+                    </div>
+
+                    <div class="metric-item">
+                        <div class="metric-label">Confidence</div>
+                        <div class="metric-value" id="confidence">--</div>
+                    </div>
+                </div>
+
+                <div class="metrics-card">
+                    <h3>📊 Session Statistics</h3>
+                    <div class="metric-item">
+                        <div class="metric-label">Average Score</div>
+                        <div class="metric-value" id="avgScore">--</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Time in Good Posture</div>
+                        <div class="metric-value" id="goodPostureTime">--</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Session Duration</div>
+                        <div class="metric-value" id="sessionTime">00:00</div>
+                    </div>
+                    
+                    <svg class="history-chart" id="scoreChart" viewBox="0 0 300 100">
+                        <defs>
+                            <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:0.4" />
+                                <stop offset="100%" style="stop-color:#00d4ff;stop-opacity:0" />
+                            </linearGradient>
+                        </defs>
+                        <path id="chartPath" class="chart-area" d=""></path>
+                        <path id="chartLine" class="chart-line" d=""></path>
+                    </svg>
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- Push-up Page -->
+    <div id="pushupPage" class="page-content">
+        <div class="main-container">
+            <div class="video-section">
+                <div class="video-wrapper">
+                    <video id="pushupVideo" autoplay muted></video>
+                    <canvas id="pushupCanvas" class="skeleton-overlay"></canvas>
+                    <div id="pushupFeedback" class="realtime-feedback" style="display:none"></div>
+                </div>
+                
+                <div class="rep-counter" id="pushupCounter">0</div>
+                <div class="exercise-status ready" id="pushupStatus">Get ready in push-up position</div>
+                
+                <div class="control-bar">
+                    <button id="startPushupBtn">🎥 Start Push-up Counter</button>
+                    <button id="resetPushupBtn" disabled>🔄 Reset Count</button>
+                    <button id="stopPushupBtn" class="stop" disabled>⏹ Stop</button>
+                </div>
+
+                <div id="pushupStatusMessage"></div>
+
+                <div class="tips-section">
+                    <h3>💪 Push-up Tips</h3>
+                    <div class="tip-item">
+                        <span class="tip-icon">✓</span>
+                        <span>Position your whole body in frame, from head to feet</span>
+                    </div>
+                    <div class="tip-item">
+                        <span class="tip-icon">✓</span>
+                        <span>Keep your body straight like a plank</span>
+                    </div>
+                    <div class="tip-item">
+                        <span class="tip-icon">✓</span>
+                        <span>Lower chest close to ground, then push up fully</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="metrics-card">
+                    <div class="score-display">
+                        <div class="score-value" id="pushupCount">0</div>
+                        <div class="score-label">Push-ups Completed</div>
+                    </div>
+
+                    <div class="metric-item">
+                        <div class="metric-label">Current Set</div>
+                        <div class="metric-value" id="currentSet">1</div>
+                    </div>
+
+                    <div class="metric-item">
+                        <div class="metric-label">Best Set</div>
+                        <div class="metric-value" id="bestSet">0</div>
+                    </div>
+
+                    <div class="metric-item">
+                        <div class="metric-label">Total Today</div>
+                        <div class="metric-value" id="totalToday">0</div>
+                    </div>
+
+                    <div class="metric-item">
+                        <div class="metric-label">Form Quality</div>
+                        <div class="metric-value" id="formQuality">--</div>
+                    </div>
+                </div>
+
+                <div class="metrics-card">
+                    <h3>🏆 Push-up Records</h3>
+                    <div class="metric-item">
+                        <div class="metric-label">Personal Best</div>
+                        <div class="metric-value" id="personalBest">0</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">This Week</div>
+                        <div class="metric-value" id="weeklyTotal">0</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Average/Day</div>
+                        <div class="metric-value" id="dailyAverage">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Placeholder pages -->
+    <div id="squatPage" class="page-content">
+        <div class="main-container">
+            <div style="text-align: center; padding: 50px; color: #888;">
+                <h2>🏋️ Squat Counter</h2>
+                <p>Coming Soon! This will track your squats using the same AI technology.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="plankPage" class="page-content">
+        <div class="main-container">
+            <div style="text-align: center; padding: 50px; color: #888;">
+                <h2>🤸 Plank Timer</h2>
+                <p>Coming Soon! This will monitor your plank form and duration.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Page -->
+    <div id="aboutPage" class="page-content">
+        <div class="main-container" style="grid-template-columns: 1fr;">
+            <div class="video-section">
+                <div style="max-width: 800px; margin: 0 auto; padding: 40px;">
+                    <div class="metrics-card">
+                        <h2 style="color: #3b82f6; margin-bottom: 30px; text-align: center;">About FitTrack AI</h2>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-bottom: 40px;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 3em; margin-bottom: 15px;">🎯</div>
+                                <h3 style="color: #8b5cf6; margin-bottom: 10px;">Our Mission</h3>
+                                <p style="color: #94a3b8; line-height: 1.6;">To make fitness tracking accessible and fun using cutting-edge AI technology that helps you achieve your health goals.</p>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 3em; margin-bottom: 15px;">🧠</div>
+                                <h3 style="color: #8b5cf6; margin-bottom: 10px;">AI Technology</h3>
+                                <p style="color: #94a3b8; line-height: 1.6;">Powered by Google's MediaPipe, our AI provides real-time pose detection and form analysis for accurate fitness tracking.</p>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 3em; margin-bottom: 15px;">🔒</div>
+                                <h3 style="color: #8b5cf6; margin-bottom: 10px;">Privacy First</h3>
+                                <p style="color: #94a3b8; line-height: 1.6;">All processing happens locally in your browser. Your video data never leaves your device.</p>
+                            </div>
+                        </div>
+
+                        <div style="background: rgba(59, 130, 246, 0.1); border-radius: 12px; padding: 30px; text-align: center;">
+                            <h3 style="color: #3b82f6; margin-bottom: 20px;">✨ Features</h3>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                                <div>
+                                    <strong style="color: #e2e8f0;">Posture Analysis</strong>
+                                    <p style="color: #94a3b8; font-size: 0.9em; margin-top: 5px;">Real-time spine alignment monitoring</p>
+                                </div>
+                                <div>
+                                    <strong style="color: #e2e8f0;">Exercise Tracking</strong>
+                                    <p style="color: #94a3b8; font-size: 0.9em; margin-top: 5px;">AI-powered push-up and workout counting</p>
+                                </div>
+                                <div>
+                                    <strong style="color: #e2e8f0;">Form Analysis</strong>
+                                    <p style="color: #94a3b8; font-size: 0.9em; margin-top: 5px;">Get feedback on your exercise form</p>
+                                </div>
+                                <div>
+                                    <strong style="color: #e2e8f0;">Progress Tracking</strong>
+                                    <p style="color: #94a3b8; font-size: 0.9em; margin-top: 5px;">Historical data and analytics</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="text-align: center; margin-top: 40px; color: #64748b;">
+                            <p>Built with ❤️ using modern web technologies</p>
+                            <p style="margin-top: 10px; font-size: 0.9em;">MediaPipe • WebRTC • Canvas API • Local Storage</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Page -->
+    <div id="helpPage" class="page-content">
+        <div class="main-container" style="grid-template-columns: 1fr;">
+            <div class="video-section">
+                <div style="max-width: 800px; margin: 0 auto; padding: 40px;">
+                    <div class="metrics-card">
+                        <h2 style="color: #3b82f6; margin-bottom: 30px; text-align: center;">❓ Help & FAQ</h2>
+                        
+                        <div class="faq-section">
+                            <div class="faq-item" style="margin-bottom: 30px; border-bottom: 1px solid rgba(59, 130, 246, 0.1); padding-bottom: 20px;">
+                                <h3 style="color: #8b5cf6; margin-bottom: 10px;">🎥 How do I start using FitTrack AI?</h3>
+                                <p style="color: #94a3b8; line-height: 1.6;">
+                                    1. Click on any exercise tab (Posture, Push-ups, etc.)<br>
+                                    2. Click "Start Camera" and allow camera permissions<br>
+                                    3. Position yourself in frame and start exercising!
+                                </p>
+                            </div>
+
+                            <div class="faq-item" style="margin-bottom: 30px; border-bottom: 1px solid rgba(59, 130, 246, 0.1); padding-bottom: 20px;">
+                                <h3 style="color: #8b5cf6; margin-bottom: 10px;">🔒 Is my video data safe?</h3>
+                                <p style="color: #94a3b8; line-height: 1.6;">
+                                    Yes! All processing happens locally in your browser using your device's computing power. 
+                                    Your video stream never leaves your device or gets uploaded anywhere.
+                                </p>
+                            </div>
+
+                            <div class="faq-item" style="margin-bottom: 30px; border-bottom: 1px solid rgba(59, 130, 246, 0.1); padding-bottom: 20px;">
+                                <h3 style="color: #8b5cf6; margin-bottom: 10px;">💪 How does push-up counting work?</h3>
+                                <p style="color: #94a3b8; line-height: 1.6;">
+                                    Our AI tracks your arm and body position to detect when you complete a full push-up. 
+                                    Make sure your whole body is visible in the frame for best results.
+                                </p>
+                            </div>
+
+                            <div class="faq-item" style="margin-bottom: 30px; border-bottom: 1px solid rgba(59, 130, 246, 0.1); padding-bottom: 20px;">
+                                <h3 style="color: #8b5cf6; margin-bottom: 10px;">⚙️ Can I customize settings?</h3>
+                                <p style="color: #94a3b8; line-height: 1.6;">
+                                    Yes! Click the settings gear (⚙️) in the top-right corner to adjust break reminders, 
+                                    themes, sensitivity, and export your data.
+                                </p>
+                            </div>
+
+                            <div class="faq-item" style="margin-bottom: 30px; border-bottom: 1px solid rgba(59, 130, 246, 0.1); padding-bottom: 20px;">
+                                <h3 style="color: #8b5cf6; margin-bottom: 10px;">📱 System Requirements</h3>
+                                <p style="color: #94a3b8; line-height: 1.6;">
+                                    • Modern web browser (Chrome, Firefox, Safari, Edge)<br>
+                                    • Webcam access<br>
+                                    • Stable internet connection (for initial loading)<br>
+                                    • Good lighting for optimal AI detection
+                                </p>
+                            </div>
+
+                            <div class="faq-item" style="margin-bottom: 20px;">
+                                <h3 style="color: #8b5cf6; margin-bottom: 10px;">🚨 Troubleshooting</h3>
+                                <p style="color: #94a3b8; line-height: 1.6;">
+                                    <strong>Camera won't start:</strong> Check browser permissions and ensure no other app is using the camera<br>
+                                    <strong>Poor detection:</strong> Ensure good lighting and full body visibility<br>
+                                    <strong>Counting issues:</strong> Move slowly and maintain proper form for better tracking
+                                </p>
+                            </div>
+                        </div>
+
+                        <div style="background: rgba(139, 92, 246, 0.1); border-radius: 12px; padding: 30px; text-align: center; margin-top: 30px;">
+                            <h3 style="color: #8b5cf6; margin-bottom: 15px;">Need More Help?</h3>
+                            <p style="color: #94a3b8; margin-bottom: 20px;">Still have questions? We're here to help!</p>
+                            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                                <a href="mailto:support@fittrack.ai" style="color: #3b82f6; text-decoration: none; padding: 10px 20px; border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 25px; transition: all 0.3s ease;">
+                                    📧 Email Support
+                                </a>
+                                <a href="#" onclick="alert('Documentation coming soon!')" style="color: #8b5cf6; text-decoration: none; padding: 10px 20px; border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 25px; transition: all 0.3s ease;">
+                                    📚 Documentation
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Button -->
+    <button id="settingsBtn" class="settings-btn" title="Settings">⚙️</button>
+
+    <!-- Settings Panel -->
+    <div id="settingsPanel" class="settings-panel">
+        <h2>⚙️ Settings</h2>
+        
+        <div class="setting-group">
+            <label class="setting-label">Break Reminder</label>
+            <div class="setting-toggle">
+                <span>Enable break reminders every 30 minutes</span>
+                <div id="breakReminderToggle" class="switch"></div>
+            </div>
+        </div>
+
+        <div class="setting-group">
+            <label class="setting-label">Break Interval (minutes)</label>
+            <input type="number" id="breakInterval" class="setting-input" value="30" min="5" max="120">
+        </div>
+
+        <div class="setting-group">
+            <label class="setting-label">Sound Notifications</label>
+            <div class="setting-toggle">
+                <span>Play sounds for posture alerts</span>
+                <div id="soundToggle" class="switch"></div>
+            </div>
+        </div>
+
+        <div class="setting-group">
+            <label class="setting-label">Posture Sensitivity</label>
+            <input type="range" id="sensitivitySlider" class="setting-input" min="1" max="10" value="5">
+            <small style="color: #888;">1 = Lenient, 10 = Strict</small>
+        </div>
+
+        <div class="setting-group">
+            <label class="setting-label">Theme</label>
+            <select id="themeSelect" class="setting-input">
+                <option value="vibrant">Vibrant (Default)</option>
+                <option value="classic">Classic Dark</option>
+                <option value="minimal">Minimal</option>
+                <option value="sunset">Sunset</option>
+            </select>
+        </div>
+
+        <div class="history-panel">
+            <h3 style="color: #00d4ff; margin-bottom: 15px;">📊 Session History</h3>
+            <div id="sessionHistory">
+                <p style="color: #888; text-align: center; padding: 20px;">No sessions recorded yet</p>
+            </div>
+            <button id="exportDataBtn" style="width: 100%; margin-top: 15px;" class="setting-input">
+                📥 Export Data (CSV)
+            </button>
+            <button id="clearHistoryBtn" style="width: 100%; margin-top: 10px; background: rgba(255,107,107,0.2); border: 1px solid rgba(255,107,107,0.3);" class="setting-input">
+                🗑️ Clear History
+            </button>
+        </div>
+    </div>
+
+    <!-- Break Reminder Modal -->
+    <div id="breakModal" class="break-modal">
+        <div class="break-modal-content">
+            <h3>🧘‍♀️ Time for a Break!</h3>
+            <p>You've been working for <span id="workTime">30</span> minutes. Take a moment to stretch and reset your posture.</p>
+            
+            <div class="break-exercises">
+                <div class="exercise-item">
+                    <span class="emoji">🤷‍♀️</span>
+                    <span class="name">Shoulder Rolls</span>
+                </div>
+                <div class="exercise-item">
+                    <span class="emoji">💆‍♀️</span>
+                    <span class="name">Neck Stretch</span>
+                </div>
+                <div class="exercise-item">
+                    <span class="emoji">🤸‍♀️</span>
+                    <span class="name">Back Arch</span>
+                </div>
+                <div class="exercise-item">
+                    <span class="emoji">🙆‍♀️</span>
+                    <span class="name">Arm Stretch</span>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 15px; justify-content: center;">
+                <button id="takeBreakBtn" style="background: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%);">
+                    ✅ Take Break (2 min)
+                </button>
+                <button id="skipBreakBtn" style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);">
+                    ⏭️ Skip
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer style="background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(20px); border-top: 1px solid rgba(59, 130, 246, 0.1); padding: 40px 20px; margin-top: 60px;">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-bottom: 30px;">
+                <div>
+                    <h4 style="color: #3b82f6; margin-bottom: 15px; font-weight: 600;">FitTrack AI</h4>
+                    <p style="color: #94a3b8; line-height: 1.6; margin-bottom: 15px;">AI-powered fitness tracking that respects your privacy. Get real-time feedback on your exercises and posture.</p>
+                    <div style="display: flex; gap: 15px;">
+                        <a href="#" style="color: #8b5cf6; font-size: 1.5em; text-decoration: none; transition: color 0.3s ease;">🐦</a>
+                        <a href="#" style="color: #8b5cf6; font-size: 1.5em; text-decoration: none; transition: color 0.3s ease;">📧</a>
+                        <a href="#" style="color: #8b5cf6; font-size: 1.5em; text-decoration: none; transition: color 0.3s ease;">🌐</a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 style="color: #3b82f6; margin-bottom: 15px; font-weight: 600;">Features</h4>
+                    <ul style="list-style: none; padding: 0; color: #94a3b8; line-height: 1.8;">
+                        <li><a href="#" onclick="switchPage('posture')" style="color: #94a3b8; text-decoration: none; transition: color 0.3s ease;">🎯 Posture Analysis</a></li>
+                        <li><a href="#" onclick="switchPage('pushup')" style="color: #94a3b8; text-decoration: none; transition: color 0.3s ease;">💪 Push-up Counter</a></li>
+                        <li><a href="#" onclick="switchPage('squat')" style="color: #94a3b8; text-decoration: none; transition: color 0.3s ease;">🏋️ Squat Tracking (Soon)</a></li>
+                        <li><a href="#" onclick="switchPage('plank')" style="color: #94a3b8; text-decoration: none; transition: color 0.3s ease;">🤸 Plank Timer (Soon)</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 style="color: #3b82f6; margin-bottom: 15px; font-weight: 600;">Support</h4>
+                    <ul style="list-style: none; padding: 0; color: #94a3b8; line-height: 1.8;">
+                        <li><a href="#" onclick="switchPage('help')" style="color: #94a3b8; text-decoration: none; transition: color 0.3s ease;">❓ Help & FAQ</a></li>
+                        <li><a href="#" onclick="alert('Privacy Policy coming soon!')" style="color: #94a3b8; text-decoration: none; transition: color 0.3s ease;">🔒 Privacy Policy</a></li>
+                        <li><a href="#" onclick="alert('Terms of Service coming soon!')" style="color: #94a3b8; text-decoration: none; transition: color 0.3s ease;">📜 Terms of Service</a></li>
+                        <li><a href="mailto:support@fittrack.ai" style="color: #94a3b8; text-decoration: none; transition: color 0.3s ease;">📧 Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 style="color: #3b82f6; margin-bottom: 15px; font-weight: 600;">Technology</h4>
+                    <ul style="list-style: none; padding: 0; color: #94a3b8; line-height: 1.8;">
+                        <li>🧠 Google MediaPipe</li>
+                        <li>🎥 WebRTC Camera Access</li>
+                        <li>🎨 HTML5 Canvas</li>
+                        <li>💾 Local Storage</li>
+                        <li>🔒 Privacy-First Design</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div style="border-top: 1px solid rgba(59, 130, 246, 0.1); padding-top: 20px; text-align: center;">
+                <p style="color: #64748b; margin-bottom: 10px;">
+                    © 2024 FitTrack AI. Built with ❤️ for your health and privacy.
+                </p>
+                <p style="color: #64748b; font-size: 0.9em;">
+                    All processing happens locally in your browser. Your data never leaves your device.
+                </p>
+            </div>
+        </div>
+    </footer>
 
     <!-- Notification system -->
     <div id="notification" class="notification"></div>
@@ -536,6 +1402,225 @@
             }
         }
         
+        // Data Storage Manager
+        const StorageManager = {
+            // Settings
+            saveSettings(settings) {
+                localStorage.setItem('postureApp_settings', JSON.stringify(settings));
+            },
+            
+            loadSettings() {
+                const saved = localStorage.getItem('postureApp_settings');
+                return saved ? JSON.parse(saved) : {
+                    breakReminders: true,
+                    breakInterval: 30,
+                    soundNotifications: true,
+                    sensitivity: 5,
+                    theme: 'vibrant'
+                };
+            },
+            
+            // Session History
+            saveSession(sessionData) {
+                const history = this.getSessionHistory();
+                history.unshift({
+                    id: Date.now(),
+                    date: new Date().toLocaleDateString(),
+                    time: new Date().toLocaleTimeString(),
+                    ...sessionData
+                });
+                
+                // Keep only last 50 sessions
+                if (history.length > 50) {
+                    history.splice(50);
+                }
+                
+                localStorage.setItem('postureApp_history', JSON.stringify(history));
+            },
+            
+            getSessionHistory() {
+                const saved = localStorage.getItem('postureApp_history');
+                return saved ? JSON.parse(saved) : [];
+            },
+            
+            clearHistory() {
+                localStorage.removeItem('postureApp_history');
+            },
+            
+            // Export data as CSV
+            exportData() {
+                const history = this.getSessionHistory();
+                if (history.length === 0) {
+                    showNotification('No data to export', 'warning');
+                    return;
+                }
+                
+                const csv = [
+                    ['Date', 'Time', 'Duration (min)', 'Average Score', 'Good Posture Time (min)', 'Total Readings'],
+                    ...history.map(session => [
+                        session.date,
+                        session.time,
+                        Math.round(session.duration / 60),
+                        session.averageScore,
+                        Math.round(session.goodPostureTime / 60),
+                        session.totalReadings
+                    ])
+                ].map(row => row.join(',')).join('\n');
+                
+                const blob = new Blob([csv], { type: 'text/csv' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `posture-data-${new Date().toISOString().split('T')[0]}.csv`;
+                a.click();
+                window.URL.revokeObjectURL(url);
+                
+            }
+        };
+
+        // Theme Manager
+        const ThemeManager = {
+            themes: {
+                vibrant: {
+                    name: 'Vibrant',
+                    primary: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
+                    secondary: 'linear-gradient(135deg, #00d4ff 0%, #5b2c87 50%, #0099cc 100%)',
+                    background: 'linear-gradient(135deg, #0f0f23 0%, #1a1a3a 25%, #2d1b69 50%, #1a1a3a 75%, #0f0f23 100%)'
+                },
+                classic: {
+                    name: 'Classic Dark',
+                    primary: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)',
+                    secondary: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    background: 'linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%)'
+                },
+                minimal: {
+                    name: 'Minimal',
+                    primary: 'linear-gradient(135deg, #4a5568 0%, #2d3748 100%)',
+                    secondary: 'linear-gradient(135deg, #63b3ed 0%, #4299e1 100%)',
+                    background: 'linear-gradient(135deg, #1a202c 0%, #2d3748 100%)'
+                },
+                sunset: {
+                    name: 'Sunset',
+                    primary: 'linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%)',
+                    secondary: 'linear-gradient(135deg, #ff6b6b 0%, #feca57 100%)',
+                    background: 'linear-gradient(135deg, #2c1810 0%, #5d4037 50%, #3e2723 100%)'
+                }
+            },
+            
+            apply(themeName) {
+                const theme = this.themes[themeName];
+                if (!theme) return;
+                
+                document.documentElement.style.setProperty('--theme-primary', theme.primary);
+                document.documentElement.style.setProperty('--theme-secondary', theme.secondary);
+                document.body.style.background = theme.background;
+                
+                // Update header
+                const header = document.querySelector('.app-header');
+                if (header) header.style.background = theme.primary;
+            }
+        };
+
+        // Break Reminder Manager
+        const BreakManager = {
+            breakTimer: null,
+            breakStartTime: null,
+            isOnBreak: false,
+            
+            start(intervalMinutes) {
+                this.stop(); // Clear existing timer
+                this.breakTimer = setInterval(() => {
+                    this.showBreakReminder();
+                }, intervalMinutes * 60 * 1000);
+            },
+            
+            stop() {
+                if (this.breakTimer) {
+                    clearInterval(this.breakTimer);
+                    this.breakTimer = null;
+                }
+            },
+            
+            showBreakReminder() {
+                const modal = document.getElementById('breakModal');
+                const workTime = document.getElementById('workTime');
+                const interval = settings.breakInterval;
+                
+                workTime.textContent = interval;
+                modal.classList.add('show');
+                
+                // Play notification sound if enabled
+                if (settings.soundNotifications) {
+                    this.playNotificationSound();
+                }
+                
+                trackEvent('break_reminder_shown', {
+                    interval_minutes: interval,
+                    timestamp: new Date().toISOString()
+                });
+            },
+            
+            takeBreak() {
+                const modal = document.getElementById('breakModal');
+                modal.classList.remove('show');
+                this.isOnBreak = true;
+                this.breakStartTime = Date.now();
+                
+                
+                // Auto-end break after 2 minutes
+                setTimeout(() => {
+                    this.endBreak();
+                }, 2 * 60 * 1000);
+                
+                trackEvent('break_taken', {
+                    timestamp: new Date().toISOString()
+                });
+            },
+            
+            skipBreak() {
+                const modal = document.getElementById('breakModal');
+                modal.classList.remove('show');
+                
+                trackEvent('break_skipped', {
+                    timestamp: new Date().toISOString()
+                });
+            },
+            
+            endBreak() {
+                if (this.isOnBreak) {
+                    this.isOnBreak = false;
+                    const breakDuration = Date.now() - this.breakStartTime;
+                    
+                    trackEvent('break_ended', {
+                        duration_seconds: Math.round(breakDuration / 1000),
+                        timestamp: new Date().toISOString()
+                    });
+                }
+            },
+            
+            playNotificationSound() {
+                // Create a simple beep sound
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = 800;
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.5);
+            }
+        };
+
+        // Settings Manager
+        let settings = StorageManager.loadSettings();
+
         // DOM Elements
         const video = document.getElementById('video');
         const canvas = document.getElementById('canvas');
@@ -549,6 +1634,51 @@
         const fullscreenBtn = document.getElementById('fullscreenBtn');
         const notification = document.getElementById('notification');
         const achievementBadge = document.getElementById('achievementBadge');
+        
+        // New DOM Elements
+        const settingsBtn = document.getElementById('settingsBtn');
+        const settingsPanel = document.getElementById('settingsPanel');
+        const breakReminderToggle = document.getElementById('breakReminderToggle');
+        const breakInterval = document.getElementById('breakInterval');
+        const soundToggle = document.getElementById('soundToggle');
+        const sensitivitySlider = document.getElementById('sensitivitySlider');
+        const themeSelect = document.getElementById('themeSelect');
+        const sessionHistory = document.getElementById('sessionHistory');
+        const exportDataBtn = document.getElementById('exportDataBtn');
+        const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+        const takeBreakBtn = document.getElementById('takeBreakBtn');
+        const skipBreakBtn = document.getElementById('skipBreakBtn');
+        
+        // Navigation Elements
+        const navButtons = {
+            posture: document.getElementById('postureNavBtn'),
+            pushup: document.getElementById('pushupNavBtn'),
+            squat: document.getElementById('squatNavBtn'),
+            plank: document.getElementById('plankNavBtn'),
+            about: document.getElementById('aboutNavBtn'),
+            help: document.getElementById('helpNavBtn')
+        };
+        
+        const pages = {
+            posture: document.getElementById('posturePage'),
+            pushup: document.getElementById('pushupPage'),
+            squat: document.getElementById('squatPage'),
+            plank: document.getElementById('plankPage'),
+            about: document.getElementById('aboutPage'),
+            help: document.getElementById('helpPage')
+        };
+        
+        // Push-up Elements
+        const pushupVideo = document.getElementById('pushupVideo');
+        const pushupCanvas = document.getElementById('pushupCanvas');
+        const pushupCtx = pushupCanvas.getContext('2d');
+        const startPushupBtn = document.getElementById('startPushupBtn');
+        const stopPushupBtn = document.getElementById('stopPushupBtn');
+        const resetPushupBtn = document.getElementById('resetPushupBtn');
+        const pushupCounter = document.getElementById('pushupCounter');
+        const pushupStatus = document.getElementById('pushupStatus');
+        const pushupFeedback = document.getElementById('pushupFeedback');
+        const pushupStatusMessage = document.getElementById('pushupStatusMessage');
         
         // State variables
         let camera = null;
@@ -575,6 +1705,24 @@
             fiftyReadings: false,
             calibratedUser: false
         };
+        
+        // Push-up tracking
+        let pushupCamera = null;
+        let pushupPose = null;
+        let pushupCount = 0;
+        let pushupState = 'ready'; // 'ready', 'up', 'down', 'transitioning'
+        let lastPushupPosition = null;
+        let pushupStats = {
+            currentSet: 0,
+            bestSet: 0,
+            totalToday: 0,
+            formQuality: 0,
+            personalBest: 0,
+            weeklyTotal: 0
+        };
+        
+        // Navigation state
+        let currentPage = 'posture';
         
         // Initialize MediaPipe Pose with optimized settings
         function initPose() {
@@ -1181,12 +2329,16 @@
                     lastUpdateTime: Date.now()
                 };
                 
+                // Start break reminders if enabled
+                if (settings.breakReminders) {
+                    BreakManager.start(settings.breakInterval);
+                }
+                
                 // Track successful camera initialization
                 trackEvent('camera_initialized', {
                     timestamp: new Date().toISOString()
                 });
                 
-                showNotification('Camera started! Position yourself in frame', 'success');
                 
             } catch (error) {
                 console.error('Camera error:', error);
@@ -1202,10 +2354,21 @@
         
         // Stop camera
         function stopCamera() {
-            // Track session end with analytics
+            // Save session data before stopping
             if (sessionStats.startTime) {
                 const sessionDuration = (Date.now() - sessionStats.startTime) / 1000;
                 const avgScore = sessionStats.scoreCount > 0 ? Math.round(sessionStats.totalScore / sessionStats.scoreCount) : 0;
+                
+                // Save session to history
+                StorageManager.saveSession({
+                    duration: sessionDuration,
+                    averageScore: avgScore,
+                    goodPostureTime: sessionStats.goodPostureTime,
+                    totalReadings: sessionStats.scoreCount
+                });
+                
+                // Update history display
+                updateSessionHistoryDisplay();
                 
                 trackEvent('session_ended', {
                     duration_seconds: Math.round(sessionDuration),
@@ -1215,6 +2378,9 @@
                     timestamp: new Date().toISOString()
                 });
             }
+            
+            // Stop break reminders
+            BreakManager.stop();
             
             if (camera) {
                 camera.stop();
@@ -1319,6 +2485,52 @@
             setTimeout(() => showStatus(''), 3000);
         }
         
+        // Settings utility functions
+        function updateSettingsUI() {
+            breakReminderToggle.classList.toggle('active', settings.breakReminders);
+            breakInterval.value = settings.breakInterval;
+            soundToggle.classList.toggle('active', settings.soundNotifications);
+            sensitivitySlider.value = settings.sensitivity;
+            themeSelect.value = settings.theme;
+            
+            // Apply theme
+            ThemeManager.apply(settings.theme);
+        }
+
+        function saveSettings() {
+            StorageManager.saveSettings(settings);
+            
+            // Restart break reminders if camera is active
+            if (camera && settings.breakReminders) {
+                BreakManager.start(settings.breakInterval);
+            } else if (camera) {
+                BreakManager.stop();
+            }
+        }
+
+        function updateSessionHistoryDisplay() {
+            const history = StorageManager.getSessionHistory();
+            
+            if (history.length === 0) {
+                sessionHistory.innerHTML = '<p style="color: #888; text-align: center; padding: 20px;">No sessions recorded yet</p>';
+                return;
+            }
+            
+            sessionHistory.innerHTML = history.slice(0, 10).map(session => `
+                <div class="history-item">
+                    <div>
+                        <div class="history-date">${session.date} ${session.time}</div>
+                        <div style="font-size: 0.8em; color: #aaa;">
+                            ${Math.round(session.duration / 60)}min session
+                        </div>
+                    </div>
+                    <div class="history-score ${session.averageScore >= 80 ? 'good' : session.averageScore >= 60 ? 'fair' : 'poor'}">
+                        ${session.averageScore}%
+                    </div>
+                </div>
+            `).join('');
+        }
+
         // Event listeners
         startBtn.addEventListener('click', startCamera);
         stopBtn.addEventListener('click', stopCamera);
@@ -1326,9 +2538,381 @@
         resetBtn.addEventListener('click', resetCalibration);
         fullscreenBtn.addEventListener('click', toggleFullscreen);
         
+        // Settings event listeners
+        settingsBtn.addEventListener('click', () => {
+            settingsPanel.classList.toggle('open');
+        });
+        
+        // Close settings when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!settingsPanel.contains(e.target) && !settingsBtn.contains(e.target)) {
+                settingsPanel.classList.remove('open');
+            }
+        });
+        
+        breakReminderToggle.addEventListener('click', () => {
+            settings.breakReminders = !settings.breakReminders;
+            breakReminderToggle.classList.toggle('active', settings.breakReminders);
+            saveSettings();
+        });
+        
+        breakInterval.addEventListener('change', () => {
+            settings.breakInterval = parseInt(breakInterval.value);
+            saveSettings();
+        });
+        
+        soundToggle.addEventListener('click', () => {
+            settings.soundNotifications = !settings.soundNotifications;
+            soundToggle.classList.toggle('active', settings.soundNotifications);
+            saveSettings();
+        });
+        
+        sensitivitySlider.addEventListener('input', () => {
+            settings.sensitivity = parseInt(sensitivitySlider.value);
+            saveSettings();
+        });
+        
+        themeSelect.addEventListener('change', () => {
+            settings.theme = themeSelect.value;
+            ThemeManager.apply(settings.theme);
+            saveSettings();
+        });
+        
+        exportDataBtn.addEventListener('click', () => {
+            StorageManager.exportData();
+        });
+        
+        clearHistoryBtn.addEventListener('click', () => {
+            if (confirm('Are you sure you want to clear all session history? This cannot be undone.')) {
+                StorageManager.clearHistory();
+                updateSessionHistoryDisplay();
+            }
+        });
+        
+        // Break modal event listeners
+        takeBreakBtn.addEventListener('click', () => {
+            BreakManager.takeBreak();
+        });
+        
+        skipBreakBtn.addEventListener('click', () => {
+            BreakManager.skipBreak();
+        });
+        
+        // Navigation Management
+        function switchPage(pageName) {
+            // Stop any running cameras first
+            if (camera) stopCamera();
+            if (pushupCamera) stopPushupCamera();
+            
+            // Update navigation
+            Object.keys(navButtons).forEach(key => {
+                navButtons[key].classList.remove('active');
+                pages[key].classList.remove('active');
+            });
+            
+            navButtons[pageName].classList.add('active');
+            pages[pageName].classList.add('active');
+            currentPage = pageName;
+            
+            // Update page title
+            const titles = {
+                posture: { title: '🎯 Advanced Posture Analyzer', subtitle: 'AI-powered real-time posture detection and spine alignment monitoring' },
+                pushup: { title: '💪 Push-up Counter', subtitle: 'AI-powered push-up form analysis and counting' },
+                squat: { title: '🏋️ Squat Counter', subtitle: 'Coming Soon! AI-powered squat tracking' },
+                plank: { title: '🤸 Plank Timer', subtitle: 'Coming Soon! AI-powered plank form monitoring' },
+                about: { title: 'ℹ️ About FitTrack AI', subtitle: 'Learn about our AI-powered fitness platform' },
+                help: { title: '❓ Help & Support', subtitle: 'Get help and find answers to common questions' }
+            };
+            
+            const pageTitle = document.getElementById('pageTitle');
+            pageTitle.innerHTML = `
+                <h1>${titles[pageName].title}</h1>
+                <p>${titles[pageName].subtitle}</p>
+            `;
+        }
+
+        // Navigation event listeners
+        Object.keys(navButtons).forEach(key => {
+            navButtons[key].addEventListener('click', () => {
+                switchPage(key);
+            });
+        });
+
+        // Push-up Functions
+        function initPushupPose() {
+            pushupPose = new Pose({
+                locateFile: (file) => {
+                    return `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5.1635988162/${file}`;
+                }
+            });
+            
+            pushupPose.setOptions({
+                modelComplexity: 1,
+                smoothLandmarks: true,
+                enableSegmentation: false,
+                minDetectionConfidence: 0.5,
+                minTrackingConfidence: 0.5
+            });
+            
+            pushupPose.onResults(onPushupResults);
+        }
+
+        function analyzePushup(landmarks) {
+            const leftShoulder = landmarks[11];
+            const rightShoulder = landmarks[12];
+            const leftElbow = landmarks[13];
+            const rightElbow = landmarks[14];
+            const leftWrist = landmarks[15];
+            const rightWrist = landmarks[16];
+            const leftHip = landmarks[23];
+            const rightHip = landmarks[24];
+            
+            // Calculate average positions
+            const shoulderY = (leftShoulder.y + rightShoulder.y) / 2;
+            const elbowY = (leftElbow.y + rightElbow.y) / 2;
+            const wristY = (leftWrist.y + rightWrist.y) / 2;
+            const hipY = (leftHip.y + rightHip.y) / 2;
+            
+            // Determine push-up position based on arm angle
+            const armAngle = Math.atan2(elbowY - shoulderY, Math.abs(leftElbow.x - leftShoulder.x)) * 180 / Math.PI;
+            
+            let position;
+            if (armAngle > 80) {
+                position = 'up';
+            } else if (armAngle < 30) {
+                position = 'down';
+            } else {
+                position = 'middle';
+            }
+            
+            // Count push-ups based on state transitions
+            if (pushupState === 'up' && position === 'down') {
+                pushupState = 'down';
+            } else if (pushupState === 'down' && position === 'up') {
+                pushupState = 'up';
+                pushupCount++;
+                updatePushupUI();
+                
+                // Update statistics
+                pushupStats.currentSet = pushupCount;
+                if (pushupCount > pushupStats.bestSet) {
+                    pushupStats.bestSet = pushupCount;
+                }
+            } else if (pushupState === 'ready' && position === 'up') {
+                pushupState = 'up';
+            }
+            
+            return {
+                position,
+                armAngle,
+                formQuality: calculatePushupForm(landmarks)
+            };
+        }
+
+        function calculatePushupForm(landmarks) {
+            // Simple form assessment based on body alignment
+            const leftShoulder = landmarks[11];
+            const rightShoulder = landmarks[12];
+            const leftHip = landmarks[23];
+            const rightHip = landmarks[24];
+            const leftAnkle = landmarks[27];
+            const rightAnkle = landmarks[28];
+            
+            // Check if body is straight (plank-like)
+            const shoulderCenter = { x: (leftShoulder.x + rightShoulder.x) / 2, y: (leftShoulder.y + rightShoulder.y) / 2 };
+            const hipCenter = { x: (leftHip.x + rightHip.x) / 2, y: (leftHip.y + rightHip.y) / 2 };
+            const ankleCenter = { x: (leftAnkle.x + rightAnkle.x) / 2, y: (leftAnkle.y + rightAnkle.y) / 2 };
+            
+            // Calculate deviation from straight line
+            const bodyDeviation = Math.abs((hipCenter.y - shoulderCenter.y) - (ankleCenter.y - hipCenter.y));
+            const formScore = Math.max(0, 100 - bodyDeviation * 1000);
+            
+            return Math.round(formScore);
+        }
+
+        function onPushupResults(results) {
+            pushupCanvas.width = pushupVideo.videoWidth;
+            pushupCanvas.height = pushupVideo.videoHeight;
+            
+            pushupCtx.clearRect(0, 0, pushupCanvas.width, pushupCanvas.height);
+            
+            if (results.poseLandmarks) {
+                const analysis = analyzePushup(results.poseLandmarks);
+                drawPushupSkeleton(results.poseLandmarks, analysis.position);
+                updatePushupFeedback(analysis);
+            } else {
+                showPushupStatus('Position your full body in frame', 'alert');
+            }
+        }
+
+        function drawPushupSkeleton(landmarks, position) {
+            let color;
+            switch(position) {
+                case 'up': color = '#00ff88'; break;
+                case 'down': color = '#ff6b6b'; break;
+                default: color = '#ffcc00';
+            }
+            
+            pushupCtx.strokeStyle = color;
+            pushupCtx.lineWidth = 3;
+            pushupCtx.lineCap = 'round';
+            
+            // Draw main body connections
+            const connections = [
+                [11, 12], // Shoulders
+                [11, 13], [13, 15], // Left arm
+                [12, 14], [14, 16], // Right arm
+                [11, 23], [12, 24], // Torso
+                [23, 24], // Hips
+                [23, 25], [25, 27], // Left leg
+                [24, 26], [26, 28]  // Right leg
+            ];
+            
+            connections.forEach(([start, end]) => {
+                if (landmarks[start] && landmarks[end]) {
+                    pushupCtx.beginPath();
+                    pushupCtx.moveTo(landmarks[start].x * pushupCanvas.width, landmarks[start].y * pushupCanvas.height);
+                    pushupCtx.lineTo(landmarks[end].x * pushupCanvas.width, landmarks[end].y * pushupCanvas.height);
+                    pushupCtx.stroke();
+                }
+            });
+            
+            // Draw key points
+            pushupCtx.fillStyle = color;
+            [11, 12, 13, 14, 15, 16, 23, 24].forEach(i => {
+                if (landmarks[i]) {
+                    pushupCtx.beginPath();
+                    pushupCtx.arc(
+                        landmarks[i].x * pushupCanvas.width,
+                        landmarks[i].y * pushupCanvas.height,
+                        5, 0, 2 * Math.PI
+                    );
+                    pushupCtx.fill();
+                }
+            });
+        }
+
+        function updatePushupFeedback(analysis) {
+            const statusText = {
+                'up': '⬆️ Push Up Position',
+                'down': '⬇️ Push Down Position', 
+                'middle': '🔄 Transitioning'
+            };
+            
+            pushupStatus.textContent = statusText[analysis.position] || 'Get in position';
+            pushupStatus.className = `exercise-status ${analysis.position}`;
+            
+            // Update form quality
+            document.getElementById('formQuality').textContent = analysis.formQuality + '%';
+            
+            if (analysis.formQuality > 80) {
+                pushupFeedback.innerHTML = '✅ Good form!';
+                pushupFeedback.style.display = 'block';
+            } else if (analysis.formQuality > 60) {
+                pushupFeedback.innerHTML = '⚠️ Keep body straight';
+                pushupFeedback.style.display = 'block';
+            } else {
+                pushupFeedback.innerHTML = '❌ Improve form: straight line from head to feet';
+                pushupFeedback.style.display = 'block';
+            }
+        }
+
+        function updatePushupUI() {
+            pushupCounter.textContent = pushupCount;
+            document.getElementById('pushupCount').textContent = pushupCount;
+            document.getElementById('currentSet').textContent = pushupCount;
+            document.getElementById('bestSet').textContent = pushupStats.bestSet;
+        }
+
+        function showPushupStatus(message, type = 'alert') {
+            if (!message) {
+                pushupStatusMessage.innerHTML = '';
+                return;
+            }
+            
+            let className = 'alert-box';
+            if (type === 'error') className += ' error';
+            if (type === 'success') className += ' success';
+            
+            pushupStatusMessage.innerHTML = `<div class="${className}">${message}</div>`;
+        }
+
+        async function startPushupCamera() {
+            try {
+                showPushupStatus('Initializing push-up counter...', 'alert');
+                
+                if (!pushupPose) {
+                    initPushupPose();
+                }
+                
+                pushupCamera = new Camera(pushupVideo, {
+                    onFrame: async () => {
+                        if (pushupPose) {
+                            await pushupPose.send({image: pushupVideo});
+                        }
+                    },
+                    width: 1280,
+                    height: 720,
+                    facingMode: 'user'
+                });
+                
+                await pushupCamera.start();
+                
+                startPushupBtn.disabled = true;
+                stopPushupBtn.disabled = false;
+                resetPushupBtn.disabled = false;
+                
+                pushupCount = 0;
+                pushupState = 'ready';
+                updatePushupUI();
+                
+                showPushupStatus('✅ Push-up counter active - Get in starting position', 'success');
+                setTimeout(() => showPushupStatus(''), 3000);
+                
+            } catch (error) {
+                console.error('Push-up camera error:', error);
+                showPushupStatus('❌ Failed to start camera. Please ensure camera permissions are granted.', 'error');
+            }
+        }
+
+        function stopPushupCamera() {
+            if (pushupCamera) {
+                pushupCamera.stop();
+                pushupCamera = null;
+            }
+            
+            pushupCtx.clearRect(0, 0, pushupCanvas.width, pushupCanvas.height);
+            
+            startPushupBtn.disabled = false;
+            stopPushupBtn.disabled = true;
+            resetPushupBtn.disabled = true;
+            
+            pushupFeedback.style.display = 'none';
+            showPushupStatus('Push-up counter stopped', 'alert');
+        }
+
+        function resetPushupCount() {
+            pushupCount = 0;
+            pushupState = 'ready';
+            updatePushupUI();
+            showPushupStatus('Count reset', 'alert');
+            setTimeout(() => showPushupStatus(''), 2000);
+        }
+
+        // Push-up event listeners
+        startPushupBtn.addEventListener('click', startPushupCamera);
+        stopPushupBtn.addEventListener('click', stopPushupCamera);
+        resetPushupBtn.addEventListener('click', resetPushupCount);
+        
         // Initialize
         window.addEventListener('load', () => {
             showStatus('Click "Start Camera" to begin posture analysis', 'alert');
+            
+            // Initialize settings UI
+            updateSettingsUI();
+            
+            // Load and display session history
+            updateSessionHistoryDisplay();
             
             // Initialize analytics
             setTimeout(() => {
@@ -1337,6 +2921,8 @@
                 trackEvent('app_loaded', {
                     user_agent: navigator.userAgent,
                     screen_resolution: `${screen.width}x${screen.height}`,
+                    theme: settings.theme,
+                    break_reminders_enabled: settings.breakReminders,
                     timestamp: new Date().toISOString()
                 });
             }, 500);
