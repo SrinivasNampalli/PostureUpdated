@@ -795,8 +795,268 @@
             display: block;
         }
 
-        /* Push-up specific styles */
-        .rep-counter {
+        /* Sign Up Page Styles */
+        .signup-container {
+            max-width: 1200px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .signup-form {
+            background: linear-gradient(135deg, 
+                rgba(15, 23, 42, 0.95) 0%, 
+                rgba(30, 41, 59, 0.95) 50%, 
+                rgba(15, 23, 42, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .signup-form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(59, 130, 246, 0.05) 50%, transparent 70%);
+            animation: shimmer 4s ease-in-out infinite;
+        }
+
+        .signup-form h2 {
+            font-size: 2em;
+            font-weight: 800;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+        }
+
+        .signup-form p {
+            text-align: center;
+            opacity: 0.8;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+            color: #94a3b8;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #cbd5e1;
+            font-weight: 500;
+        }
+
+        .form-group input[type="text"], 
+        .form-group input[type="email"], 
+        .form-group input[type="password"] {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 10px;
+            color: #e8e9f3;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input[type="text"]:focus, 
+        .form-group input[type="email"]:focus, 
+        .form-group input[type="password"]:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .signup-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            margin-top: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .signup-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .stats-panel {
+            background: linear-gradient(135deg, 
+                rgba(15, 23, 42, 0.95) 0%, 
+                rgba(30, 41, 59, 0.95) 50%, 
+                rgba(15, 23, 42, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .stats-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .stats-header h3 {
+            font-size: 1.5em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(59, 130, 246, 0.1);
+        }
+
+        .stat-label {
+            color: #cbd5e1;
+            font-weight: 500;
+        }
+
+        .stat-value {
+            font-weight: 700;
+            font-size: 1.2em;
+            color: #3b82f6;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .user-list {
+            margin-top: 30px;
+        }
+
+        .user-list h4 {
+            color: #cbd5e1;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        .user-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            background: rgba(30, 41, 59, 0.3);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(59, 130, 246, 0.1);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            color: #e8e9f3;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .user-status {
+            color: #94a3b8;
+            font-size: 0.85em;
+        }
+
+        .online-indicator {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            margin-left: auto;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .live-counter {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .live-counter .counter-number {
+            font-size: 2em;
+            font-weight: 800;
+            color: #10b981;
+            display: block;
+            margin-bottom: 5px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .live-counter .counter-label {
+            color: #94a3b8;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .signup-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .signup-form, .stats-panel {
+                padding: 30px 20px;
+            }
+        }
+
+        /* Exercise specific styles */
+        .rep-counter, .plank-timer {
             font-size: 4em;
             font-weight: bold;
             text-align: center;
@@ -841,6 +1101,7 @@
             <button id="plankNavBtn" class="nav-btn">🤸 Plank</button>
             <button id="aboutNavBtn" class="nav-btn">ℹ️ About</button>
             <button id="helpNavBtn" class="nav-btn">❓ Help</button>
+            <button id="signupNavBtn" class="nav-btn">👤 Sign Up</button>
         </nav>
         <div id="pageTitle">
             <h1>🎯 Advanced Posture Analyzer</h1>
@@ -1039,21 +1300,130 @@
         </div>
     </div>
 
-    <!-- Placeholder pages -->
+    <!-- Squat Page -->
     <div id="squatPage" class="page-content">
         <div class="main-container">
-            <div style="text-align: center; padding: 50px; color: #888;">
-                <h2>🏋️ Squat Counter</h2>
-                <p>Coming Soon! This will track your squats using the same AI technology.</p>
+            <div class="video-section">
+                <div class="video-wrapper">
+                    <video id="squatVideo" autoplay muted></video>
+                    <canvas id="squatCanvas" class="skeleton-overlay"></canvas>
+                    <div id="squatFeedback" class="realtime-feedback" style="display:none"></div>
+                </div>
+                
+                <div class="rep-counter" id="squatCounter">0</div>
+                <div class="exercise-status ready" id="squatStatus">Stand up straight to begin</div>
+                
+                <div class="control-bar">
+                    <button id="startSquatBtn">🎥 Start Squat Counter</button>
+                    <button id="resetSquatBtn" disabled>🔄 Reset Count</button>
+                    <button id="stopSquatBtn" class="stop" disabled>⏹ Stop</button>
+                </div>
+            </div>
+            
+            <div class="metrics-section">
+                <div class="metrics-card">
+                    <h3>📊 Squat Analytics</h3>
+                    
+                    <div class="metric-item">
+                        <span class="metric-label">Total Squats</span>
+                        <span class="metric-value" id="squatTotal">0</span>
+                    </div>
+                    
+                    <div class="metric-item">
+                        <span class="metric-label">Current Session</span>
+                        <span class="metric-value" id="squatSession">0</span>
+                    </div>
+                    
+                    <div class="metric-item">
+                        <span class="metric-label">Best Session</span>
+                        <span class="metric-value" id="squatBest">0</span>
+                    </div>
+                    
+                    <div class="metric-item">
+                        <span class="metric-label">Form Score</span>
+                        <span class="metric-value" id="squatFormScore">--</span>
+                    </div>
+                    
+                    <div class="metric-item">
+                        <span class="metric-label">Depth Quality</span>
+                        <span class="metric-value" id="squatDepth">--</span>
+                    </div>
+                </div>
+                
+                <div class="tips-section">
+                    <h4>💡 Squat Tips</h4>
+                    <ul>
+                        <li>Keep your feet shoulder-width apart</li>
+                        <li>Lower until thighs are parallel to floor</li>
+                        <li>Keep your chest up and core engaged</li>
+                        <li>Push through your heels to stand up</li>
+                        <li>Maintain steady breathing throughout</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Plank Page -->
     <div id="plankPage" class="page-content">
         <div class="main-container">
-            <div style="text-align: center; padding: 50px; color: #888;">
-                <h2>🤸 Plank Timer</h2>
-                <p>Coming Soon! This will monitor your plank form and duration.</p>
+            <div class="video-section">
+                <div class="video-wrapper">
+                    <video id="plankVideo" autoplay muted></video>
+                    <canvas id="plankCanvas" class="skeleton-overlay"></canvas>
+                    <div id="plankFeedback" class="realtime-feedback" style="display:none"></div>
+                </div>
+                
+                <div class="plank-timer" id="plankTimer">00:00</div>
+                <div class="exercise-status ready" id="plankStatus">Get into plank position to begin</div>
+                
+                <div class="control-bar">
+                    <button id="startPlankBtn">🎥 Start Plank Timer</button>
+                    <button id="resetPlankBtn" disabled>🔄 Reset Timer</button>
+                    <button id="stopPlankBtn" class="stop" disabled>⏹ Stop</button>
+                </div>
+            </div>
+            
+            <div class="metrics-section">
+                <div class="metrics-card">
+                    <h3>📊 Plank Analytics</h3>
+                    
+                    <div class="metric-item">
+                        <span class="metric-label">Current Time</span>
+                        <span class="metric-value" id="plankCurrent">00:00</span>
+                    </div>
+                    
+                    <div class="metric-item">
+                        <span class="metric-label">Best Time</span>
+                        <span class="metric-value" id="plankBest">00:00</span>
+                    </div>
+                    
+                    <div class="metric-item">
+                        <span class="metric-label">Total Time</span>
+                        <span class="metric-value" id="plankTotal">00:00</span>
+                    </div>
+                    
+                    <div class="metric-item">
+                        <span class="metric-label">Form Score</span>
+                        <span class="metric-value" id="plankFormScore">--</span>
+                    </div>
+                    
+                    <div class="metric-item">
+                        <span class="metric-label">Stability</span>
+                        <span class="metric-value" id="plankStability">--</span>
+                    </div>
+                </div>
+                
+                <div class="tips-section">
+                    <h4>💡 Plank Tips</h4>
+                    <ul>
+                        <li>Keep your body in a straight line</li>
+                        <li>Engage your core throughout</li>
+                        <li>Don't let your hips sag or pike up</li>
+                        <li>Keep your head in neutral position</li>
+                        <li>Breathe steadily, don't hold breath</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -1189,6 +1559,120 @@
                                     📚 Documentation
                                 </a>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sign Up Page -->
+    <div id="signupPage" class="page-content">
+        <div class="signup-container">
+            <div class="signup-form">
+                <h2>Join Our Community</h2>
+                <p>Start your posture improvement journey today</p>
+                
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" name="fullName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" required>
+                    </div>
+                    
+                    <button type="submit" class="signup-btn">Create Account</button>
+                </form>
+            </div>
+            
+            <div class="stats-panel">
+                <div class="stats-header">
+                    <h3>Community Stats</h3>
+                    <p style="color: #94a3b8; margin: 0;">Real-time user activity</p>
+                </div>
+                
+                <div class="live-counter">
+                    <span class="counter-number" id="liveUsers">247</span>
+                    <span class="counter-label">Users Online Now</span>
+                </div>
+                
+                <div class="stat-item">
+                    <span class="stat-label">Total Users</span>
+                    <span class="stat-value" id="totalUsers">12,847</span>
+                </div>
+                
+                <div class="stat-item">
+                    <span class="stat-label">Sessions Today</span>
+                    <span class="stat-value" id="todaySessions">3,291</span>
+                </div>
+                
+                <div class="stat-item">
+                    <span class="stat-label">Posture Improvements</span>
+                    <span class="stat-value" id="improvements">89,234</span>
+                </div>
+                
+                <div class="stat-item">
+                    <span class="stat-label">Average Score</span>
+                    <span class="stat-value">87%</span>
+                </div>
+                
+                <div class="user-list">
+                    <h4>Recently Joined</h4>
+                    
+                    <div class="user-item">
+                        <div class="user-avatar">A</div>
+                        <div class="user-info">
+                            <div class="user-name">Alex Chen</div>
+                            <div class="user-status">Joined 2 minutes ago</div>
+                        </div>
+                        <div class="online-indicator"></div>
+                    </div>
+                    
+                    <div class="user-item">
+                        <div class="user-avatar">S</div>
+                        <div class="user-info">
+                            <div class="user-name">Sarah Johnson</div>
+                            <div class="user-status">Joined 8 minutes ago</div>
+                        </div>
+                        <div class="online-indicator"></div>
+                    </div>
+                    
+                    <div class="user-item">
+                        <div class="user-avatar">M</div>
+                        <div class="user-info">
+                            <div class="user-name">Mike Rodriguez</div>
+                            <div class="user-status">Joined 15 minutes ago</div>
+                        </div>
+                        <div class="online-indicator"></div>
+                    </div>
+                    
+                    <div class="user-item">
+                        <div class="user-avatar">E</div>
+                        <div class="user-info">
+                            <div class="user-name">Emily Davis</div>
+                            <div class="user-status">Joined 23 minutes ago</div>
+                        </div>
+                        <div class="online-indicator"></div>
+                    </div>
+                    
+                    <div class="user-item">
+                        <div class="user-avatar">J</div>
+                        <div class="user-info">
+                            <div class="user-name">James Wilson</div>
+                            <div class="user-status">Joined 1 hour ago</div>
                         </div>
                     </div>
                 </div>
@@ -1656,7 +2140,8 @@
             squat: document.getElementById('squatNavBtn'),
             plank: document.getElementById('plankNavBtn'),
             about: document.getElementById('aboutNavBtn'),
-            help: document.getElementById('helpNavBtn')
+            help: document.getElementById('helpNavBtn'),
+            signup: document.getElementById('signupNavBtn')
         };
         
         const pages = {
@@ -1665,12 +2150,37 @@
             squat: document.getElementById('squatPage'),
             plank: document.getElementById('plankPage'),
             about: document.getElementById('aboutPage'),
-            help: document.getElementById('helpPage')
+            help: document.getElementById('helpPage'),
+            signup: document.getElementById('signupPage')
         };
         
         // Push-up Elements
         const pushupVideo = document.getElementById('pushupVideo');
         const pushupCanvas = document.getElementById('pushupCanvas');
+        
+        // Squat Elements
+        const squatVideo = document.getElementById('squatVideo');
+        const squatCanvas = document.getElementById('squatCanvas');
+        const squatCounter = document.getElementById('squatCounter');
+        const squatStatus = document.getElementById('squatStatus');
+        const startSquatBtn = document.getElementById('startSquatBtn');
+        const resetSquatBtn = document.getElementById('resetSquatBtn');
+        const stopSquatBtn = document.getElementById('stopSquatBtn');
+        const squatFeedback = document.getElementById('squatFeedback');
+        
+        // Plank Elements
+        const plankVideo = document.getElementById('plankVideo');
+        const plankCanvas = document.getElementById('plankCanvas');
+        const plankTimer = document.getElementById('plankTimer');
+        const plankStatus = document.getElementById('plankStatus');
+        const startPlankBtn = document.getElementById('startPlankBtn');
+        const resetPlankBtn = document.getElementById('resetPlankBtn');
+        const stopPlankBtn = document.getElementById('stopPlankBtn');
+        const plankFeedback = document.getElementById('plankFeedback');
+        
+        // Canvas contexts
+        const squatCtx = squatCanvas.getContext('2d');
+        const plankCtx = plankCanvas.getContext('2d');
         const pushupCtx = pushupCanvas.getContext('2d');
         const startPushupBtn = document.getElementById('startPushupBtn');
         const stopPushupBtn = document.getElementById('stopPushupBtn');
@@ -1719,6 +2229,34 @@
             formQuality: 0,
             personalBest: 0,
             weeklyTotal: 0
+        };
+        
+        // Squat tracking
+        let squatCamera = null;
+        let squatPose = null;
+        let squatCount = 0;
+        let squatState = 'ready'; // 'ready', 'up', 'down', 'transitioning'
+        let lastSquatPosition = null;
+        let squatStats = {
+            currentSet: 0,
+            bestSet: 0,
+            totalToday: 0,
+            formScore: 100,
+            depthQuality: 0
+        };
+        
+        // Plank tracking  
+        let plankCamera = null;
+        let plankPose = null;
+        let plankStartTime = null;
+        let plankCurrentTime = 0;
+        let plankIsActive = false;
+        let plankStats = {
+            bestTime: 0,
+            totalTime: 0,
+            currentSession: 0,
+            formScore: 100,
+            stabilityScore: 100
         };
         
         // Navigation state
@@ -2387,6 +2925,16 @@
                 camera = null;
             }
             
+            if (pose) {
+                pose.close();
+                pose = null;
+            }
+            
+            if (video.srcObject) {
+                video.srcObject.getTracks().forEach(track => track.stop());
+                video.srcObject = null;
+            }
+            
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
             startBtn.disabled = false;
@@ -2600,9 +3148,42 @@
         
         // Navigation Management
         function switchPage(pageName) {
-            // Stop any running cameras first
-            if (camera) stopCamera();
-            if (pushupCamera) stopPushupCamera();
+            // Stop any running cameras first - be more aggressive about cleanup
+            try {
+                if (camera) stopCamera();
+            } catch (e) {
+                console.warn('Error stopping main camera:', e);
+            }
+            
+            try {
+                if (pushupCamera) stopPushupCamera();
+            } catch (e) {
+                console.warn('Error stopping pushup camera:', e);
+            }
+            
+            try {
+                if (squatCamera) stopSquatCamera();
+            } catch (e) {
+                console.warn('Error stopping squat camera:', e);
+            }
+            
+            try {
+                if (plankCamera) stopPlankCamera();
+            } catch (e) {
+                console.warn('Error stopping plank camera:', e);
+            }
+            
+            // Additional cleanup - force stop all video streams
+            [video, pushupVideo, squatVideo, plankVideo].forEach(videoElement => {
+                if (videoElement && videoElement.srcObject) {
+                    try {
+                        videoElement.srcObject.getTracks().forEach(track => track.stop());
+                        videoElement.srcObject = null;
+                    } catch (e) {
+                        console.warn('Error stopping video stream:', e);
+                    }
+                }
+            });
             
             // Update navigation
             Object.keys(navButtons).forEach(key => {
@@ -2618,10 +3199,11 @@
             const titles = {
                 posture: { title: '🎯 Advanced Posture Analyzer', subtitle: 'AI-powered real-time posture detection and spine alignment monitoring' },
                 pushup: { title: '💪 Push-up Counter', subtitle: 'AI-powered push-up form analysis and counting' },
-                squat: { title: '🏋️ Squat Counter', subtitle: 'Coming Soon! AI-powered squat tracking' },
-                plank: { title: '🤸 Plank Timer', subtitle: 'Coming Soon! AI-powered plank form monitoring' },
+                squat: { title: '🏋️ Squat Counter', subtitle: 'AI-powered squat form analysis and counting' },
+                plank: { title: '🤸 Plank Timer', subtitle: 'AI-powered plank form monitoring and timing' },
                 about: { title: 'ℹ️ About FitTrack AI', subtitle: 'Learn about our AI-powered fitness platform' },
-                help: { title: '❓ Help & Support', subtitle: 'Get help and find answers to common questions' }
+                help: { title: '❓ Help & Support', subtitle: 'Get help and find answers to common questions' },
+                signup: { title: '👤 Join Our Community', subtitle: 'Create your account and start your fitness journey' }
             };
             
             const pageTitle = document.getElementById('pageTitle');
@@ -2881,6 +3463,16 @@
                 pushupCamera = null;
             }
             
+            if (pushupPose) {
+                pushupPose.close();
+                pushupPose = null;
+            }
+            
+            if (pushupVideo.srcObject) {
+                pushupVideo.srcObject.getTracks().forEach(track => track.stop());
+                pushupVideo.srcObject = null;
+            }
+            
             pushupCtx.clearRect(0, 0, pushupCanvas.width, pushupCanvas.height);
             
             startPushupBtn.disabled = false;
@@ -2903,6 +3495,16 @@
         startPushupBtn.addEventListener('click', startPushupCamera);
         stopPushupBtn.addEventListener('click', stopPushupCamera);
         resetPushupBtn.addEventListener('click', resetPushupCount);
+        
+        // Squat event listeners
+        startSquatBtn.addEventListener('click', startSquatCamera);
+        stopSquatBtn.addEventListener('click', stopSquatCamera);
+        resetSquatBtn.addEventListener('click', resetSquatCount);
+        
+        // Plank event listeners
+        startPlankBtn.addEventListener('click', startPlankCamera);
+        stopPlankBtn.addEventListener('click', stopPlankCamera);
+        resetPlankBtn.addEventListener('click', resetPlankTimer);
         
         // Initialize
         window.addEventListener('load', () => {
@@ -2928,6 +3530,19 @@
             }, 500);
         });
         
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            // Stop all cameras and clean up resources
+            try {
+                if (camera) stopCamera();
+                if (pushupCamera) stopPushupCamera();
+                if (squatCamera) stopSquatCamera();
+                if (plankCamera) stopPlankCamera();
+            } catch (e) {
+                console.warn('Error during cleanup:', e);
+            }
+        });
+        
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
             if (e.key === ' ' && !calibrateBtn.disabled) {
@@ -2936,6 +3551,1004 @@
             }
             if (e.key === 'Escape' && !stopBtn.disabled) {
                 stopCamera();
+            }
+        });
+
+        // Squat Functions
+        function initSquatPose() {
+            squatPose = new Pose({
+                locateFile: (file) => {
+                    return `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5.1635988162/${file}`;
+                }
+            });
+            
+            squatPose.setOptions({
+                modelComplexity: 1,
+                smoothLandmarks: true,
+                enableSegmentation: false,
+                smoothSegmentation: false,
+                minDetectionConfidence: 0.5,
+                minTrackingConfidence: 0.5
+            });
+            
+            squatPose.onResults(onSquatResults);
+        }
+        
+        function startSquatCamera() {
+            if (!squatPose) {
+                initSquatPose();
+            }
+            
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => {
+                    squatVideo.srcObject = stream;
+                    squatCamera = new Camera(squatVideo, {
+                        onFrame: async () => {
+                            await squatPose.send({image: squatVideo});
+                        },
+                        width: 640,
+                        height: 480
+                    });
+                    squatCamera.start();
+                    
+                    startSquatBtn.disabled = true;
+                    stopSquatBtn.disabled = false;
+                    resetSquatBtn.disabled = false;
+                    
+                    squatCount = 0;
+                    squatState = 'ready';
+                    updateSquatUI();
+                    
+                    showSquatStatus('✅ Squat counter active - Stand up straight to begin', 'success');
+                    setTimeout(() => showSquatStatus(''), 3000);
+                })
+                .catch(err => {
+                    console.error('Error accessing camera:', err);
+                    alert('Unable to access camera. Please ensure camera permissions are granted.');
+                });
+        }
+        
+        function stopSquatCamera() {
+            if (squatCamera) {
+                squatCamera.stop();
+                squatCamera = null;
+            }
+            
+            if (squatPose) {
+                squatPose.close();
+                squatPose = null;
+            }
+            
+            if (squatVideo.srcObject) {
+                squatVideo.srcObject.getTracks().forEach(track => track.stop());
+                squatVideo.srcObject = null;
+            }
+            
+            squatCtx.clearRect(0, 0, squatCanvas.width, squatCanvas.height);
+            
+            startSquatBtn.disabled = false;
+            stopSquatBtn.disabled = true;
+            resetSquatBtn.disabled = true;
+            
+            squatFeedback.style.display = 'none';
+            showSquatStatus('Squat counter stopped', 'alert');
+        }
+        
+        function resetSquatCount() {
+            squatCount = 0;
+            squatState = 'ready';
+            updateSquatUI();
+            showSquatStatus('Count reset', 'alert');
+            setTimeout(() => showSquatStatus(''), 2000);
+        }
+        
+        function onSquatResults(results) {
+            if (!results.poseLandmarks) return;
+            
+            // Set canvas dimensions to match video
+            squatCanvas.width = squatVideo.videoWidth;
+            squatCanvas.height = squatVideo.videoHeight;
+            
+            // Clear canvas
+            squatCtx.clearRect(0, 0, squatCanvas.width, squatCanvas.height);
+            
+            // Draw pose landmarks
+            drawConnectors(squatCtx, results.poseLandmarks, POSE_CONNECTIONS, {color: '#00FF00', lineWidth: 2});
+            drawLandmarks(squatCtx, results.poseLandmarks, {color: '#FF0000', lineWidth: 2});
+            
+            // Analyze squat movement
+            const squatAnalysis = analyzeSquatMovement(results.poseLandmarks);
+            
+            if (squatAnalysis) {
+                updateSquatMetrics(squatAnalysis);
+                provideLiveSquatFeedback(squatAnalysis);
+            }
+        }
+        
+        function analyzeSquatMovement(landmarks) {
+            const leftHip = landmarks[23];
+            const rightHip = landmarks[24];
+            const leftKnee = landmarks[25];
+            const rightKnee = landmarks[26];
+            const leftAnkle = landmarks[27];
+            const rightAnkle = landmarks[28];
+            
+            if (!leftHip || !rightHip || !leftKnee || !rightKnee || !leftAnkle || !rightAnkle) {
+                return null;
+            }
+            
+            // Calculate knee angles
+            const leftKneeAngle = calculateAngle(leftHip, leftKnee, leftAnkle);
+            const rightKneeAngle = calculateAngle(rightHip, rightKnee, rightAnkle);
+            const avgKneeAngle = (leftKneeAngle + rightKneeAngle) / 2;
+            
+            // Calculate hip height
+            const hipHeight = (leftHip.y + rightHip.y) / 2;
+            const kneeHeight = (leftKnee.y + rightKnee.y) / 2;
+            
+            // Determine position
+            let position;
+            if (avgKneeAngle > 160) {
+                position = 'up';
+            } else if (avgKneeAngle < 120) {
+                position = 'down';
+            } else {
+                position = 'middle';
+            }
+            
+            // Count squats
+            if (squatState === 'ready' && position === 'down') {
+                squatState = 'down';
+            } else if (squatState === 'down' && position === 'up') {
+                squatState = 'up';
+                squatCount++;
+                updateSquatUI();
+                
+                // Update statistics
+                squatStats.currentSet = squatCount;
+                if (squatCount > squatStats.bestSet) {
+                    squatStats.bestSet = squatCount;
+                }
+            } else if (squatState === 'ready' && position === 'up') {
+                squatState = 'up';
+            }
+            
+            // Calculate form scores
+            const depthScore = Math.max(0, Math.min(100, (160 - avgKneeAngle) / 40 * 100));
+            const formScore = calculateSquatForm(landmarks);
+            
+            squatStats.depthQuality = Math.round(depthScore);
+            squatStats.formScore = Math.round(formScore);
+            
+            return {
+                position,
+                kneeAngle: avgKneeAngle,
+                hipHeight,
+                depthScore,
+                formScore
+            };
+        }
+        
+        function calculateSquatForm(landmarks) {
+            let formScore = 100;
+            
+            // Check knee alignment
+            const leftKnee = landmarks[25];
+            const rightKnee = landmarks[26];
+            const leftAnkle = landmarks[27];
+            const rightAnkle = landmarks[28];
+            
+            if (leftKnee && rightKnee && leftAnkle && rightAnkle) {
+                const kneeToAnkleLeft = Math.abs(leftKnee.x - leftAnkle.x);
+                const kneeToAnkleRight = Math.abs(rightKnee.x - rightAnkle.x);
+                
+                if (kneeToAnkleLeft > 0.05 || kneeToAnkleRight > 0.05) {
+                    formScore -= 20; // Knee valgus penalty
+                }
+            }
+            
+            return Math.max(0, formScore);
+        }
+        
+        function updateSquatUI() {
+            squatCounter.textContent = squatCount;
+            document.getElementById('squatSession').textContent = squatCount;
+            document.getElementById('squatBest').textContent = squatStats.bestSet;
+            document.getElementById('squatTotal').textContent = squatStats.totalToday;
+            document.getElementById('squatFormScore').textContent = squatStats.formScore + '%';
+            document.getElementById('squatDepth').textContent = squatStats.depthQuality + '%';
+        }
+        
+        function updateSquatMetrics(analysis) {
+            // Update real-time metrics display
+            document.getElementById('squatFormScore').textContent = Math.round(analysis.formScore) + '%';
+            document.getElementById('squatDepth').textContent = Math.round(analysis.depthScore) + '%';
+        }
+        
+        function provideLiveSquatFeedback(analysis) {
+            let feedback = '';
+            
+            if (analysis.position === 'down' && analysis.depthScore < 50) {
+                feedback = '⬇️ Go deeper!';
+            } else if (analysis.position === 'down' && analysis.depthScore > 80) {
+                feedback = '✅ Perfect depth!';
+            } else if (analysis.formScore < 70) {
+                feedback = '⚠️ Check knee alignment';
+            } else if (squatState === 'up') {
+                feedback = '💪 Great squat!';
+            }
+            
+            if (feedback) {
+                squatFeedback.textContent = feedback;
+                squatFeedback.style.display = 'block';
+                setTimeout(() => {
+                    squatFeedback.style.display = 'none';
+                }, 2000);
+            }
+        }
+        
+        function showSquatStatus(message, type = 'alert') {
+            squatStatus.textContent = message;
+            squatStatus.className = `exercise-status ${type}`;
+        }
+        
+        // Plank Functions
+        function initPlankPose() {
+            plankPose = new Pose({
+                locateFile: (file) => {
+                    return `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5.1635988162/${file}`;
+                }
+            });
+            
+            plankPose.setOptions({
+                modelComplexity: 1,
+                smoothLandmarks: true,
+                enableSegmentation: false,
+                smoothSegmentation: false,
+                minDetectionConfidence: 0.5,
+                minTrackingConfidence: 0.5
+            });
+            
+            plankPose.onResults(onPlankResults);
+        }
+        
+        function startPlankCamera() {
+            if (!plankPose) {
+                initPlankPose();
+            }
+            
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => {
+                    plankVideo.srcObject = stream;
+                    plankCamera = new Camera(plankVideo, {
+                        onFrame: async () => {
+                            await plankPose.send({image: plankVideo});
+                        },
+                        width: 640,
+                        height: 480
+                    });
+                    plankCamera.start();
+                    
+                    startPlankBtn.disabled = true;
+                    stopPlankBtn.disabled = false;
+                    resetPlankBtn.disabled = false;
+                    
+                    plankStartTime = null;
+                    plankCurrentTime = 0;
+                    plankIsActive = false;
+                    updatePlankUI();
+                    
+                    showPlankStatus('✅ Plank timer active - Get into plank position', 'success');
+                    setTimeout(() => showPlankStatus(''), 3000);
+                })
+                .catch(err => {
+                    console.error('Error accessing camera:', err);
+                    alert('Unable to access camera. Please ensure camera permissions are granted.');
+                });
+        }
+        
+        function stopPlankCamera() {
+            if (plankCamera) {
+                plankCamera.stop();
+                plankCamera = null;
+            }
+            
+            if (plankPose) {
+                plankPose.close();
+                plankPose = null;
+            }
+            
+            if (plankVideo.srcObject) {
+                plankVideo.srcObject.getTracks().forEach(track => track.stop());
+                plankVideo.srcObject = null;
+            }
+            
+            if (plankIsActive) {
+                plankIsActive = false;
+                const currentTime = plankCurrentTime;
+                plankStats.totalTime += currentTime;
+                if (currentTime > plankStats.bestTime) {
+                    plankStats.bestTime = currentTime;
+                }
+            }
+            
+            plankCtx.clearRect(0, 0, plankCanvas.width, plankCanvas.height);
+            
+            startPlankBtn.disabled = false;
+            stopPlankBtn.disabled = true;
+            resetPlankBtn.disabled = true;
+            
+            plankFeedback.style.display = 'none';
+            showPlankStatus('Plank timer stopped', 'alert');
+        }
+        
+        function resetPlankTimer() {
+            plankStartTime = null;
+            plankCurrentTime = 0;
+            plankIsActive = false;
+            updatePlankUI();
+            showPlankStatus('Timer reset', 'alert');
+            setTimeout(() => showPlankStatus(''), 2000);
+        }
+        
+        function onPlankResults(results) {
+            if (!results.poseLandmarks) return;
+            
+            // Set canvas dimensions to match video
+            plankCanvas.width = plankVideo.videoWidth;
+            plankCanvas.height = plankVideo.videoHeight;
+            
+            // Clear canvas
+            plankCtx.clearRect(0, 0, plankCanvas.width, plankCanvas.height);
+            
+            // Draw pose landmarks
+            drawConnectors(plankCtx, results.poseLandmarks, POSE_CONNECTIONS, {color: '#00FF00', lineWidth: 2});
+            drawLandmarks(plankCtx, results.poseLandmarks, {color: '#FF0000', lineWidth: 2});
+            
+            // Analyze plank position
+            const plankAnalysis = analyzePlankPosition(results.poseLandmarks);
+            
+            if (plankAnalysis) {
+                updatePlankMetrics(plankAnalysis);
+                provideLivePlankFeedback(plankAnalysis);
+                
+                // Start/stop timer based on plank position
+                if (plankAnalysis.isValidPlank && !plankIsActive) {
+                    plankStartTime = Date.now();
+                    plankIsActive = true;
+                    showPlankStatus('⏱️ Timer started!', 'success');
+                } else if (!plankAnalysis.isValidPlank && plankIsActive) {
+                    plankIsActive = false;
+                    const sessionTime = plankCurrentTime;
+                    plankStats.totalTime += sessionTime;
+                    if (sessionTime > plankStats.bestTime) {
+                        plankStats.bestTime = sessionTime;
+                    }
+                    showPlankStatus('⏸️ Timer paused - get back in position', 'alert');
+                }
+                
+                // Update current time
+                if (plankIsActive) {
+                    plankCurrentTime = (Date.now() - plankStartTime) / 1000;
+                    updatePlankUI();
+                }
+            }
+        }
+        
+        function analyzePlankPosition(landmarks) {
+            const nose = landmarks[0];
+            const leftShoulder = landmarks[11];
+            const rightShoulder = landmarks[12];
+            const leftHip = landmarks[23];
+            const rightHip = landmarks[24];
+            const leftAnkle = landmarks[27];
+            const rightAnkle = landmarks[28];
+            
+            if (!nose || !leftShoulder || !rightShoulder || !leftHip || !rightHip) {
+                return null;
+            }
+            
+            // Calculate body alignment
+            const shoulderY = (leftShoulder.y + rightShoulder.y) / 2;
+            const hipY = (leftHip.y + rightHip.y) / 2;
+            const bodySlope = Math.abs(shoulderY - hipY);
+            
+            // Check if in plank position (relatively straight line)
+            const isValidPlank = bodySlope < 0.1 && shoulderY > 0.3 && hipY > 0.3;
+            
+            // Calculate form scores
+            const alignmentScore = Math.max(0, 100 - (bodySlope * 1000));
+            const stabilityScore = calculatePlankStability(landmarks);
+            
+            plankStats.formScore = Math.round(alignmentScore);
+            plankStats.stabilityScore = Math.round(stabilityScore);
+            
+            return {
+                isValidPlank,
+                bodySlope,
+                alignmentScore,
+                stabilityScore
+            };
+        }
+        
+        function calculatePlankStability(landmarks) {
+            // Simple stability calculation based on shoulder position consistency
+            // In a real implementation, you'd track movement over time
+            return Math.random() * 20 + 80; // Placeholder for now
+        }
+        
+        function updatePlankUI() {
+            const timeStr = formatTime(plankCurrentTime);
+            plankTimer.textContent = timeStr;
+            document.getElementById('plankCurrent').textContent = timeStr;
+            document.getElementById('plankBest').textContent = formatTime(plankStats.bestTime);
+            document.getElementById('plankTotal').textContent = formatTime(plankStats.totalTime);
+            document.getElementById('plankFormScore').textContent = plankStats.formScore + '%';
+            document.getElementById('plankStability').textContent = plankStats.stabilityScore + '%';
+        }
+        
+        function updatePlankMetrics(analysis) {
+            document.getElementById('plankFormScore').textContent = Math.round(analysis.alignmentScore) + '%';
+            document.getElementById('plankStability').textContent = Math.round(analysis.stabilityScore) + '%';
+        }
+        
+        function provideLivePlankFeedback(analysis) {
+            let feedback = '';
+            
+            if (!analysis.isValidPlank) {
+                feedback = '⚠️ Get into plank position';
+            } else if (analysis.alignmentScore < 70) {
+                feedback = '📏 Keep body straight';
+            } else if (analysis.stabilityScore < 70) {
+                feedback = '💪 Hold steady';
+            } else if (plankIsActive) {
+                feedback = '✅ Perfect plank!';
+            }
+            
+            if (feedback) {
+                plankFeedback.textContent = feedback;
+                plankFeedback.style.display = 'block';
+            }
+        }
+        
+        function showPlankStatus(message, type = 'alert') {
+            plankStatus.textContent = message;
+            plankStatus.className = `exercise-status ${type}`;
+        }
+        
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Signup functionality
+        let liveUsersCount = 247;
+        let totalUsersCount = 12847;
+        let todaySessionsCount = 3291;
+        let improvementsCount = 89234;
+        
+        function updateLiveStats() {
+            // Only update if we're on the signup page
+            if (currentPage !== 'signup') return;
+            
+            // More realistic time-based fluctuations
+            const hour = new Date().getHours();
+            const isPeakHours = (hour >= 8 && hour <= 10) || (hour >= 17 && hour <= 21); // Morning/evening peaks
+            
+            // Online users fluctuate based on time of day
+            let baseUsers = isPeakHours ? 280 : 220;
+            let fluctuation = Math.floor(Math.random() * 41) - 20; // -20 to +20
+            liveUsersCount = Math.max(180, Math.min(350, baseUsers + fluctuation));
+            
+            // Correlate new signups with online users (higher online = more likely signups)
+            const signupProbability = liveUsersCount > 250 ? 0.4 : 0.25;
+            if (Math.random() < signupProbability) {
+                totalUsersCount += Math.floor(Math.random() * 3) + 1;
+                
+                // When someone signs up, slightly increase other metrics
+                if (Math.random() < 0.6) {
+                    todaySessionsCount += Math.floor(Math.random() * 2) + 1;
+                }
+                if (Math.random() < 0.3) {
+                    improvementsCount += Math.floor(Math.random() * 8) + 2;
+                }
+            }
+            
+            // Independent session increases (people using the app)
+            if (Math.random() < 0.5) {
+                todaySessionsCount += Math.floor(Math.random() * 4) + 1;
+            }
+            
+            // Improvements grow slower but more meaningfully
+            if (Math.random() < 0.15) {
+                const improvementBurst = Math.floor(Math.random() * 15) + 5;
+                improvementsCount += improvementBurst;
+            }
+            
+            // Add some occasional "spikes" to make it feel more organic
+            if (Math.random() < 0.05) { // 5% chance of spike
+                const spikeType = Math.random();
+                if (spikeType < 0.33) {
+                    liveUsersCount += Math.floor(Math.random() * 30) + 10;
+                } else if (spikeType < 0.66) {
+                    todaySessionsCount += Math.floor(Math.random() * 50) + 20;
+                } else {
+                    improvementsCount += Math.floor(Math.random() * 100) + 50;
+                }
+            }
+            
+            // Animate number changes
+            const liveUsersEl = document.getElementById('liveUsers');
+            const totalUsersEl = document.getElementById('totalUsers');
+            const todaySessionsEl = document.getElementById('todaySessions');
+            const improvementsEl = document.getElementById('improvements');
+            
+            if (liveUsersEl && liveUsersEl.textContent != liveUsersCount) {
+                liveUsersEl.style.transform = 'scale(1.1)';
+                liveUsersEl.style.color = '#10b981';
+                setTimeout(() => {
+                    liveUsersEl.textContent = liveUsersCount;
+                    liveUsersEl.style.transform = 'scale(1)';
+                    setTimeout(() => {
+                        liveUsersEl.style.color = '#10b981';
+                    }, 200);
+                }, 150);
+            }
+            
+            if (totalUsersEl && parseInt(totalUsersEl.textContent.replace(/,/g, '')) !== totalUsersCount) {
+                totalUsersEl.style.transform = 'scale(1.05)';
+                totalUsersEl.style.color = '#06b6d4';
+                setTimeout(() => {
+                    totalUsersEl.textContent = totalUsersCount.toLocaleString();
+                    totalUsersEl.style.transform = 'scale(1)';
+                    setTimeout(() => {
+                        totalUsersEl.style.color = '#3b82f6';
+                    }, 200);
+                }, 100);
+            }
+            
+            if (todaySessionsEl && parseInt(todaySessionsEl.textContent.replace(/,/g, '')) !== todaySessionsCount) {
+                todaySessionsEl.style.transform = 'scale(1.05)';
+                todaySessionsEl.style.color = '#8b5cf6';
+                setTimeout(() => {
+                    todaySessionsEl.textContent = todaySessionsCount.toLocaleString();
+                    todaySessionsEl.style.transform = 'scale(1)';
+                    setTimeout(() => {
+                        todaySessionsEl.style.color = '#3b82f6';
+                    }, 200);
+                }, 100);
+            }
+            
+            if (improvementsEl && parseInt(improvementsEl.textContent.replace(/,/g, '')) !== improvementsCount) {
+                improvementsEl.style.transform = 'scale(1.05)';
+                improvementsEl.style.color = '#f59e0b';
+                setTimeout(() => {
+                    improvementsEl.textContent = improvementsCount.toLocaleString();
+                    improvementsEl.style.transform = 'scale(1)';
+                    setTimeout(() => {
+                        improvementsEl.style.color = '#3b82f6';
+                    }, 200);
+                }, 100);
+            }
+        }
+        
+        // Update stats with more realistic timing
+        function scheduleNextUpdate() {
+            // More frequent updates during peak hours
+            const hour = new Date().getHours();
+            const isPeakHours = (hour >= 8 && hour <= 10) || (hour >= 17 && hour <= 21);
+            const baseInterval = isPeakHours ? 2000 : 4000; // 2-4s base interval
+            const randomInterval = Math.random() * 6000 + baseInterval; // Add 0-6s variation
+            
+            setTimeout(() => {
+                updateLiveStats();
+                scheduleNextUpdate();
+            }, randomInterval);
+        }
+        
+        scheduleNextUpdate();
+        
+        // Enhanced realistic names database with censoring
+        const fakeNames = [
+            // Regular names
+            'Alex Chen', 'Sarah Johnson', 'Michael Rodriguez', 'Emma Davis', 'James Wilson',
+            'Jessica Martinez', 'David Thompson', 'Lisa Wang', 'Robert Kim', 'Amanda Taylor',
+            'Christopher Brown', 'Ashley Garcia', 'Matthew Miller', 'Rachel Green', 'Daniel Lewis',
+            'Jennifer Hall', 'Mark Young', 'Laura Anderson', 'Paul White', 'Maria Lopez',
+            'Kevin Martinez', 'Nicole Clark', 'Steven Wright', 'Megan Thomas', 'Anthony Hill',
+            'Samantha Walker', 'Ryan Scott', 'Catherine King', 'Joshua Adams', 'Amy Nelson',
+            'Brandon Carter', 'Rebecca Mitchell', 'Jacob Perez', 'Michelle Roberts', 'Tyler Moore',
+            'Stephanie Taylor', 'Justin Jackson', 'Kimberly White', 'Andrew Martin', 'Elizabeth Thompson',
+            
+            // Tech/Modern names
+            'Kai Patel', 'Zoe Chen', 'Lucas Kim', 'Aria Singh', 'Ethan Zhang',
+            'Maya Johnson', 'Noah Williams', 'Sophia Martinez', 'Liam Davis', 'Isabella Garcia',
+            'Oliver Brown', 'Charlotte Wilson', 'Elijah Jones', 'Amelia Miller', 'William Moore',
+            'Harper Taylor', 'Benjamin Anderson', 'Evelyn Thomas', 'Mason Jackson', 'Abigail White',
+            'Logan Martin', 'Emily Lee', 'Alexander Thompson', 'Madison Clark', 'Sebastian Lewis',
+            'Avery Walker', 'Jack Robinson', 'Ella Hall', 'Owen Young', 'Scarlett King',
+            
+            // International names
+            'Hiroshi Tanaka', 'Priya Sharma', 'Ahmed Hassan', 'Elena Rodriguez', 'Viktor Petrov',
+            'Fatima Al-Zahra', 'Carlos Silva', 'Yuki Nakamura', 'Ananya Gupta', 'Marco Rossi',
+            'Ingrid Larsson', 'Diego Martinez', 'Amara Okafor', 'Dmitri Volkov', 'Lila Patel',
+            'Francesco Romano', 'Aisha Khan', 'Henrik Nielsen', 'Camila Santos', 'Raj Mehta',
+            
+            // Censored names (realistic censoring patterns)
+            'J**** S****', 'M**** R*******z', 'A***a D****', 'R**** W****n',
+            'S***h J*****n', 'D**** T*****n', 'L*** W***', 'C***s B****',
+            'E*** M*****r', 'T*** A*****n', 'K*** P****', 'N**** C****',
+            'B***n K***', 'G*** L***s', 'H***y T****r', 'P*** S****h',
+            'Q***n W****e', 'V***a G****a', 'X***r H****s', 'Z*** Y****',
+            'J****e M****n', 'K****n L***s', 'A****w C****k', 'M****e W*****r',
+            'S****n R****t', 'T****a P****z', 'U*** S****v', 'W****m T****s',
+            'A***a K***g', 'B***e N****n', 'C****e O****r', 'D***a P****r',
+            'E***n Q****n', 'F***k R*****s', 'G***e S*****h', 'H***n T****r',
+            
+            // More regular names
+            'Austin Cooper', 'Brooke Murphy', 'Caleb Rivera', 'Diana Cook', 'Eric Bailey',
+            'Faith Reed', 'Gabriel Ward', 'Hannah Torres', 'Ian Peterson', 'Julia Gray',
+            'Kyle Ramirez', 'Leah Watson', 'Marcus Brooks', 'Natalie Kelly', 'Oscar Sanders',
+            'Paige Price', 'Quinton Bennett', 'Ruby Wood', 'Shane Barnes', 'Tiffany Ross',
+            'Victor Henderson', 'Wendy Coleman', 'Xavier Jenkins', 'Yasmin Perry', 'Zachary Powell',
+            
+            'Adrian Foster', 'Bella Hughes', 'Connor Flores', 'Destiny Stewart', 'Eli Morris',
+            'Fiona Rogers', 'Griffin Reed', 'Haley Cox', 'Isaac Ward', 'Jade Rivera',
+            'Knox Bailey', 'Luna Gray', 'Milo Watson', 'Nora Brooks', 'Orion Kelly',
+            'Piper Sanders', 'Quinn Price', 'Ryder Bennett', 'Sage Wood', 'Theo Barnes',
+            
+            // Tech industry inspired
+            'Ava Blockchain', 'Byte Johnson', 'Code Martinez', 'Data Wilson', 'Echo Chen',
+            'Flux Rodriguez', 'Grid Thompson', 'Hash Kim', 'Index Patel', 'Json Lee',
+            'Kube Singh', 'Link Davis', 'Mesh Garcia', 'Node Brown', 'Orbit Miller',
+            
+            // Fitness inspired  
+            'Flex Martin', 'Grace Strong', 'Hunter Fit', 'Iris Active', 'Jax Cardio',
+            'Kira Wellness', 'Lance Trainer', 'Maya Pilates', 'Nova Crossfit', 'Opal Yoga',
+            
+            // More censored variations
+            'A****r B****t', 'C****a D*****s', 'E****h F*****r', 'G****l H*****s',
+            'I****c J*****n', 'K****n L*****z', 'M****a N*****l', 'O****r P*****k',
+            'Q****e R*****o', 'S****e T*****y', 'U****a V*****z', 'W****r X*****g',
+            'Y****a Z*****i', 'A***e C****r', 'D***k F****h', 'G***n I****s',
+            'J***r L****n', 'M***y O****t', 'P***l R****d', 'S***a U****k',
+            'T***s W****m', 'V***i Z****e', 'B***n E****y', 'F***a H****l',
+            'K***o M****s', 'N***h Q****r', 'R***d T****v', 'X***m A****n',
+            
+            // Location-inspired names
+            'Brooklyn Vale', 'Denver Cross', 'Phoenix Wright', 'Austin Rivers', 'Charlotte Stone',
+            'Dallas Moon', 'Houston Star', 'Miami Beach', 'Orlando Sky', 'Tampa Bay',
+            'Seattle Rain', 'Portland Rose', 'Vegas Gold', 'Reno Silver', 'Aspen Snow',
+            
+            // Creative/Artistic names
+            'Canvas Wright', 'Melody Chord', 'Rhythm Beat', 'Sketch Palette', 'Story Write',
+            'Verse Poem', 'Dance Flow', 'Paint Brush', 'Clay Sculpt', 'Film Reel',
+            'Photo Snap', 'Music Note', 'Art Create', 'Design Shape', 'Color Bright',
+            
+            // Nature inspired
+            'River Stone', 'Forest Green', 'Ocean Blue', 'Mountain Peak', 'Valley Deep',
+            'Canyon Wide', 'Desert Sand', 'Prairie Wind', 'Lake Clear', 'Stream Flow',
+            'Meadow Bloom', 'Garden Rose', 'Field Grass', 'Tree Oak', 'Leaf Pine',
+            
+            // More international with censoring
+            'R****o S****a', 'Y****i N*****a', 'P****a S****a', 'A****d H****n',
+            'E****a R*******z', 'V****r P****v', 'F****a A*****a', 'C****s S****a',
+            'M****o R****i', 'I****d L*****n', 'D****o M*******z', 'A****a O****r',
+            'D****i V****v', 'L*** P****', 'F*******o R****o', 'A****a K***',
+            'H****k N*****n', 'C****a S****s', 'R** M****', 'L*** C***',
+            
+            // Tech company inspired (censored)
+            'G****e A*****m', 'A****n C****g', 'M****t D*****r', 'A****e I*****n',
+            'T****a E*******r', 'N****x S*****r', 'S****y P*****r', 'U****r D****r',
+            'L****n L*****r', 'T****r U****r', 'I****m P*****r', 'S****k C*****r',
+            'D****d T*****r', 'Z*** M*****r', 'F****k C*****r', 'T****k U****r',
+            
+            // Gaming inspired + Meme names
+            'Player One', 'Gamer Pro', 'Quest Hero', 'Level Max', 'Score High',
+            'Pixel Art', 'Combo Strike', 'Power Up', 'Boss Fight', 'Game Over',
+            'xX_NoScope_Xx', 'MLG_Doritos', '360NoSlump', 'Get_Rekt_Posture', 'DeezNuts_Spine',
+            'SussyBaka420', 'AmongUs_Back', 'Crewmate_Core', 'Impostor_Spine', 'Vent_Cleaner',
+            'Poggers_Posture', 'Pepega_Spine', 'MonkaS_Back', 'Kekw_Posture', 'EZ_Clap_Spine',
+            'Chad_Thundercock', 'Virgin_Walker', 'Stacy_Spine', 'Karen_Posture', 'Kyle_Back',
+            
+            // Fitness goals inspired
+            'Goal Setter', 'Progress Track', 'Habit Build', 'Strong Will', 'Flex Time',
+            'Core Power', 'Mind Body', 'Health First', 'Fit Life', 'Active Day',
+            
+            // More realistic everyday names with censoring mix
+            'J****n B****r', 'K****y M*****r', 'L****n W*****n', 'N****e G*****z',
+            'S****n R*****s', 'T****a L*****z', 'A****w H*****s', 'B****a T*****r',
+            'C****e A*****n', 'D****l M*****z', 'E****h W*****s', 'F****k J*****n',
+            'G****e D*****s', 'H****h B*****n', 'I****a S*****h', 'J****a P*****z',
+            
+            // Professional titles as names (modern trend)
+            'Dr. Smith', 'Prof. Johnson', 'Coach Martinez', 'Trainer Lee', 'Chef Rodriguez',
+            'Artist Chen', 'Writer Kim', 'Designer Patel', 'Developer Singh', 'Manager Davis',
+            
+            // Username-style names (realistic for online platforms)
+            'FitFan2024', 'HealthyLife99', 'PosturePro', 'WorkoutWin', 'ActiveAce',
+            'FlexMaster', 'CoreStrong', 'FitGoals', 'HealthHub', 'WellnessWin',
+            'GymLife24', 'FitTrack99', 'HealthyMe', 'ActiveLife', 'StrongCore',
+            
+            // Funny/Meme usernames
+            'sadboi69', 'xxPOSTUREGODxx', 'BackPainBegone', 'SlouchLord420', 'StraightSpine_',
+            'xXSpineAlignXx', 'PostureCheck99', 'SlumpDestroyer', 'ErgoWarrior666', 'BackBender2024',
+            'FlexOnHaters', 'SpinalTapped', 'ChairSlayer', 'DeskDefeater', 'BackCrack_Master',
+            'YeetTheSlump', 'NoMoreOof', 'SpineTime69', 'PostureBae', 'BackPain_No_More',
+            'Flex_Appeal', 'Stand_Tall_bb', 'Chair_Enemy', 'Posture_Police', 'Spine_Soldier',
+            'BackBeastMode', 'PostureGang', 'SlouchSlayer', 'Chair_Warrior', 'Desk_Destroyer',
+            'FlexLord2024', 'SpineCheck_', 'BackBossBabe', 'PosturePrincess', 'FlexKing420',
+            'No_Slouch_Zone', 'StraightUpFlex', 'PosturePro_', 'BackBendQueen', 'SpineGuard',
+            'FlexMeister', 'PostureVibes', 'BackAttack2024', 'SpineMaster69', 'FlexableAF',
+            'PostureQueen_', 'BackBendy', 'SpineAlert99', 'FlexGod2024', 'NoSlouchLife',
+            
+            // More international names
+            'Akira Sato', 'Bharti Sharma', 'Chen Wei', 'Dmitri Kozlov', 'Elena Popov',
+            'Fatou Diallo', 'Giovanni Bianchi', 'Hassan Ali', 'Ines Silva', 'Jose Gutierrez',
+            'Kwame Asante', 'Layla Mansour', 'Miguel Torres', 'Nadia Petrov', 'Omar Hassan',
+            'Priscilla Santos', 'Qasim Rahman', 'Rashid Abdullah', 'Sofia Andersson', 'Tariq Khan',
+            'Uma Reddy', 'Valentina Costa', 'Wei Zhang', 'Xander Novak', 'Yasmina Belkacem',
+            'Zara Okonkwo', 'Abdullah Ahmed', 'Beatrice Larsson', 'Chin-Yu Lin', 'Deepak Mehta',
+            'Esther Okafor', 'Fabio Rossi', 'Gemma O\'Brien', 'Hamza Benali', 'Isabelle Dubois',
+            
+            // More creative censored patterns (including funny ones)
+            'A•••• B••••', 'C•••• D••••', 'E•••• F••••', 'G•••• H••••',
+            'I•••• J••••', 'K•••• L••••', 'M•••• N••••', 'O•••• P••••',
+            'Q•••• R••••', 'S•••• T••••', 'U•••• V••••', 'W•••• X••••',
+            'Y•••• Z••••', 'A••• B•••', 'C••• D•••', 'E••• F•••',
+            'G••• H•••', 'I••• J•••', 'K••• L•••', 'M••• N•••',
+            
+            // Censored funny usernames
+            's****i69', 'xX****GODXx', 'Back****Gone', 'S****d420', 'Flex****ters',
+            'Y***TheSlump', 'Post****ae', 'Sp***69', 'No****Oof', '****Lord2024',
+            'Ch***layer', 'D***eater', 'B***tMode', 'Pos****ng', 'F***ble69',
+            'NoS****ife', 'Str****ex', 'B***ndy', 'F***d2024', 'Sp***ert99',
+            
+            // More realistic meme/gaming names
+            'GigaChad2024', 'Based_Posture', 'Sigma_Spine', 'Chad_Back', 'Alpha_Align',
+            'Beta_Bend', 'Virgin_Slouch', 'Gamer_Posture', 'MLG_Spine', 'Pro_Align420',
+            'Epic_Ergonomics', 'Legendary_Lumbar', 'Mythic_Muscles', 'Elite_Ergo',
+            'Master_Muscle', 'Diamond_Desk', 'Platinum_Posture', 'Gold_Gamer',
+            'Silver_Spine', 'Bronze_Back', 'Iron_Posture', 'Copper_Core',
+            
+            // Mix of full and partially censored
+            'Jennifer M***', 'Michael R***', 'Jessica L***', 'David W***', 'Sarah K***',
+            'Christopher B***', 'Ashley G***', 'Matthew T***', 'Amanda H***', 'Daniel S***',
+            'Lisa P***', 'Mark C***', 'Laura A***', 'Ryan M***', 'Nicole R***',
+            'Kevin L***', 'Megan T***', 'Brandon C***', 'Rebecca P***', 'Justin H***'
+        ];
+        
+        function addNewUser() {
+            // Only add if we're on the signup page
+            if (currentPage !== 'signup') return;
+            
+            const userList = document.querySelector('.user-list');
+            if (!userList) return;
+            
+            const userItems = userList.querySelectorAll('.user-item');
+            
+            // Smoothly fade out the last user before removing
+            if (userItems.length >= 5) {
+                const lastUser = userItems[userItems.length - 1];
+                lastUser.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                lastUser.style.opacity = '0';
+                lastUser.style.transform = 'translateX(20px)';
+                setTimeout(() => {
+                    if (lastUser.parentNode) {
+                        lastUser.remove();
+                    }
+                }, 300);
+            }
+            
+            // Create new user with random realistic details
+            const name = fakeNames[Math.floor(Math.random() * fakeNames.length)];
+            const initial = name.includes('•') || name.includes('*') ? 
+                name.charAt(0) : // For censored names, use first letter
+                name.split(' ')[0].charAt(0); // For regular names, use first name initial
+            
+            // Add some variety to join statuses
+            const joinStatuses = [
+                'Just joined', 'Joined now', 'New member', 'Recently joined', 
+                'Just signed up', 'Welcome!', 'New to community'
+            ];
+            const status = joinStatuses[Math.floor(Math.random() * joinStatuses.length)];
+            
+            const newUser = document.createElement('div');
+            newUser.className = 'user-item';
+            newUser.style.opacity = '0';
+            newUser.style.transform = 'translateY(-20px) scale(0.95)';
+            newUser.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+            
+            // Vary avatar colors for more realism
+            const avatarColors = [
+                'linear-gradient(135deg, #3b82f6, #8b5cf6)',
+                'linear-gradient(135deg, #10b981, #059669)',
+                'linear-gradient(135deg, #f59e0b, #d97706)',
+                'linear-gradient(135deg, #ef4444, #dc2626)',
+                'linear-gradient(135deg, #8b5cf6, #7c3aed)',
+                'linear-gradient(135deg, #06b6d4, #0891b2)'
+            ];
+            const avatarColor = avatarColors[Math.floor(Math.random() * avatarColors.length)];
+            
+            newUser.innerHTML = `
+                <div class="user-avatar" style="background: ${avatarColor}">${initial}</div>
+                <div class="user-info">
+                    <div class="user-name">${name}</div>
+                    <div class="user-status">${status}</div>
+                </div>
+                <div class="online-indicator"></div>
+            `;
+            
+            // Insert at the beginning with staggered animation
+            const firstUser = userList.querySelector('.user-item');
+            if (firstUser) {
+                firstUser.parentNode.insertBefore(newUser, firstUser);
+            } else {
+                userList.appendChild(newUser);
+            }
+            
+            // Animate in with bounce effect
+            setTimeout(() => {
+                newUser.style.opacity = '1';
+                newUser.style.transform = 'translateY(0) scale(1)';
+            }, 50);
+            
+            // Add a brief highlight effect
+            setTimeout(() => {
+                newUser.style.background = 'rgba(59, 130, 246, 0.1)';
+                newUser.style.borderColor = 'rgba(59, 130, 246, 0.3)';
+                setTimeout(() => {
+                    newUser.style.background = 'rgba(30, 41, 59, 0.3)';
+                    newUser.style.borderColor = 'rgba(59, 130, 246, 0.1)';
+                }, 1500);
+            }, 500);
+            
+            // Update timestamps for existing users with slight delay for realism
+            setTimeout(() => {
+                updateUserTimestamps();
+            }, 200);
+            
+            // Occasionally trigger a stat increase when someone joins (correlation)
+            if (Math.random() < 0.3) {
+                setTimeout(() => {
+                    totalUsersCount += 1;
+                    updateLiveStats();
+                }, 800);
+            }
+        }
+        
+        function updateUserTimestamps() {
+            if (currentPage !== 'signup') return;
+            
+            const userItems = document.querySelectorAll('.user-item');
+            const timestamps = ['Just joined', '5 minutes ago', '12 minutes ago', '28 minutes ago', '1 hour ago'];
+            
+            userItems.forEach((item, index) => {
+                const statusElement = item.querySelector('.user-status');
+                if (statusElement && index < timestamps.length) {
+                    statusElement.textContent = timestamps[index];
+                }
+            });
+        }
+        
+        // Add new users with more realistic timing
+        function scheduleNextUser() {
+            const hour = new Date().getHours();
+            const isPeakHours = (hour >= 8 && hour <= 10) || (hour >= 17 && hour <= 21);
+            
+            // More frequent signups during peak hours
+            const baseDelay = isPeakHours ? 8000 : 20000; // 8-20s base
+            const randomDelay = Math.random() * (isPeakHours ? 15000 : 25000); // Add 15-25s variation
+            const totalDelay = baseDelay + randomDelay; // Total: 8-23s peak, 20-45s off-peak
+            
+            setTimeout(() => {
+                if (currentPage === 'signup') {
+                    addNewUser();
+                }
+                scheduleNextUser(); // Schedule the next one
+            }, totalDelay);
+        }
+        
+        // Start the user addition cycle
+        scheduleNextUser();
+        
+        // Automatically increase stats over time (static growth)
+        function continuousStatGrowth() {
+            if (currentPage !== 'signup') {
+                setTimeout(continuousStatGrowth, 10000); // Check again in 10s
+                return;
+            }
+            
+            // Gradual base increases every 30-60 seconds
+            const growthInterval = Math.random() * 30000 + 30000; // 30-60 seconds
+            
+            setTimeout(() => {
+                // Always increase total users slowly
+                totalUsersCount += Math.floor(Math.random() * 2) + 1;
+                
+                // Increase sessions more frequently
+                todaySessionsCount += Math.floor(Math.random() * 8) + 3;
+                
+                // Improvements grow in bursts
+                if (Math.random() < 0.7) { // 70% chance
+                    improvementsCount += Math.floor(Math.random() * 25) + 10;
+                }
+                
+                // Trigger visual updates
+                updateLiveStats();
+                
+                // Schedule next growth cycle
+                continuousStatGrowth();
+            }, growthInterval);
+        }
+        
+        // Start continuous growth
+        continuousStatGrowth();
+        
+        // Additional periodic stat boosts (larger jumps)
+        function periodicStatBoosts() {
+            if (currentPage !== 'signup') {
+                setTimeout(periodicStatBoosts, 60000); // Check again in 1 minute
+                return;
+            }
+            
+            // Every 2-5 minutes, bigger stat increases
+            const boostInterval = Math.random() * 180000 + 120000; // 2-5 minutes
+            
+            setTimeout(() => {
+                // Simulate "viral moments" or "feature launches"
+                const boostType = Math.random();
+                
+                if (boostType < 0.4) {
+                    // User signup surge
+                    totalUsersCount += Math.floor(Math.random() * 15) + 5;
+                    todaySessionsCount += Math.floor(Math.random() * 30) + 15;
+                } else if (boostType < 0.7) {
+                    // Session activity surge
+                    todaySessionsCount += Math.floor(Math.random() * 50) + 25;
+                    improvementsCount += Math.floor(Math.random() * 80) + 40;
+                } else {
+                    // Improvement achievement surge
+                    improvementsCount += Math.floor(Math.random() * 150) + 75;
+                    liveUsersCount = Math.min(350, liveUsersCount + Math.floor(Math.random() * 20) + 10);
+                }
+                
+                updateLiveStats();
+                periodicStatBoosts(); // Schedule next boost
+            }, boostInterval);
+        }
+        
+        // Start periodic boosts
+        periodicStatBoosts();
+        
+        // Handle signup form submission
+        document.addEventListener('DOMContentLoaded', () => {
+            const signupForm = document.getElementById('signupForm');
+            if (signupForm) {
+                signupForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const submitBtn = document.querySelector('.signup-btn');
+                    if (submitBtn) {
+                        submitBtn.textContent = 'Creating Account...';
+                        submitBtn.disabled = true;
+                        
+                        setTimeout(() => {
+                            alert('Account created successfully! Welcome to the community!');
+                            submitBtn.textContent = 'Account Created!';
+                            submitBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+                            
+                            // Reset form
+                            setTimeout(() => {
+                                this.reset();
+                                submitBtn.textContent = 'Create Account';
+                                submitBtn.disabled = false;
+                                submitBtn.style.background = 'linear-gradient(135deg, #3b82f6, #8b5cf6)';
+                            }, 2000);
+                        }, 2000);
+                    }
+                });
             }
         });
     </script>
