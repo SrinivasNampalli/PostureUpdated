@@ -1127,6 +1127,13 @@
                     <button id="stopBtn" class="stop" disabled>⏹ Stop</button>
                 </div>
 
+                <div class="control-bar" style="margin-top: 10px;">
+                    <button id="exportCsvBtn" disabled>📊 Export CSV</button>
+                    <button id="exportJsonBtn" disabled>📋 Export JSON</button>
+                    <button id="viewDataBtn" disabled>📈 View Data</button>
+                    <button id="clearDataBtn" disabled>🗑️ Clear Data</button>
+                </div>
+
                 <div id="statusMessage"></div>
 
                 <div class="tips-section">
@@ -2215,6 +2222,24 @@
             fiftyReadings: false,
             calibratedUser: false
         };
+
+        // Data storage for export functionality
+        let postureDataStore = [];
+        const MAX_STORED_READINGS = 1000; // Reasonable limit
+
+        // Simple data point structure for original algorithm
+        function createDataPoint(metrics) {
+            return {
+                timestamp: new Date().toISOString(),
+                score: metrics.score,
+                confidence: metrics.confidence,
+                spineAngle: metrics.spineAngle,
+                shoulderTilt: metrics.shoulderTilt,
+                headForwardAngle: metrics.headForwardAngle,
+                shoulderRoll: metrics.shoulderRoll,
+                armSymmetry: metrics.armSymmetry
+            };
+        }
         
         // Push-up tracking
         let pushupCamera = null;
@@ -2412,19 +2437,57 @@
             if (postureBuffer.length > BUFFER_SIZE) {
                 postureBuffer.shift();
             }
-            
+
             const smoothed = {};
             const keys = Object.keys(metrics);
-            
+
             keys.forEach(key => {
                 if (typeof metrics[key] === 'number') {
-                    const values = postureBuffer.map(m => m[key]);
-                    smoothed[key] = values.reduce((a, b) => a + b, 0) / values.length;
+                    const values = postureBuffer.map(m => m[key]).filter(v => v !== undefined);
+
+                    if (values.length === 0) {
+                        smoothed[key] = metrics[key];
+                        return;
+                    }
+
+                    // Enhanced smoothing with outlier removal for stability
+                    if (values.length >= 3) {
+                        // Remove outliers (top and bottom 20%)
+                        const sorted = [...values].sort((a, b) => a - b);
+                        const removeCount = Math.floor(sorted.length * 0.2);
+                        const trimmed = sorted.slice(removeCount, sorted.length - removeCount);
+
+                        if (trimmed.length > 0) {
+                            // Weighted average favoring recent values
+                            let weightedSum = 0;
+                            let totalWeight = 0;
+
+                            trimmed.forEach((value, index) => {
+                                const weight = index + 1; // More weight to recent values
+                                weightedSum += value * weight;
+                                totalWeight += weight;
+                            });
+
+                            smoothed[key] = weightedSum / totalWeight;
+                        } else {
+                            smoothed[key] = values.reduce((a, b) => a + b, 0) / values.length;
+                        }
+                    } else {
+                        // Simple average for small buffers
+                        smoothed[key] = values.reduce((a, b) => a + b, 0) / values.length;
+                    }
+
+                    // Apply gentle rounding to reduce micro-fluctuations
+                    if (key === 'score') {
+                        smoothed[key] = Math.round(smoothed[key]);
+                    } else {
+                        smoothed[key] = Math.round(smoothed[key] * 10) / 10; // Round to 1 decimal
+                    }
                 } else {
                     smoothed[key] = metrics[key];
                 }
             });
-            
+
             return smoothed;
         }
         
@@ -2438,14 +2501,19 @@
             if (results.poseLandmarks) {
                 const metrics = analyzePosture(results.poseLandmarks);
                 const smoothedMetrics = smoothMetrics(metrics);
-                
+
+                // Store data for export (every 10th frame to avoid spam)
+                if (postureDataStore.length === 0 || postureDataStore.length % 10 === 0) {
+                    storePostureData(smoothedMetrics);
+                }
+
                 drawEnhancedSkeleton(results.poseLandmarks, smoothedMetrics.score);
                 updateUI(smoothedMetrics);
                 updateSessionStats(smoothedMetrics);
                 updateScoreHistory(smoothedMetrics.score);
                 provideFeedback(smoothedMetrics);
                 checkAchievements(smoothedMetrics);
-                
+
                 showStatus('', 'success');
             } else {
                 showStatus('Adjust your position - full upper body should be visible', 'alert');
@@ -2821,6 +2889,189 @@
                 document.exitFullscreen();
             }
         }
+
+        // DATA EXPORT FUNCTIONALITY
+
+        // Store posture data point
+        function storePostureData(metrics) {
+            // Prevent memory overflow
+            if (postureDataStore.length >= MAX_STORED_READINGS) {
+                postureDataStore.shift(); // Remove oldest entry
+            }
+
+            const dataPoint = createDataPoint(metrics);
+            postureDataStore.push(dataPoint);
+
+            // Enable export buttons if we have data
+            if (postureDataStore.length > 0) {
+                document.getElementById('exportCsvBtn').disabled = false;
+                document.getElementById('exportJsonBtn').disabled = false;
+                document.getElementById('viewDataBtn').disabled = false;
+                document.getElementById('clearDataBtn').disabled = false;
+            }
+
+            // Save to localStorage for persistence
+            saveDataToStorage();
+        }
+
+        // Save data to localStorage
+        function saveDataToStorage() {
+            try {
+                const dataToSave = {
+                    postureData: postureDataStore,
+                    lastUpdate: new Date().toISOString()
+                };
+                localStorage.setItem('postureAnalyzerData', JSON.stringify(dataToSave));
+            } catch (error) {
+                console.warn('Unable to save data to localStorage:', error);
+            }
+        }
+
+        // Load data from localStorage
+        function loadDataFromStorage() {
+            try {
+                const savedData = localStorage.getItem('postureAnalyzerData');
+                if (savedData) {
+                    const parsed = JSON.parse(savedData);
+                    postureDataStore = parsed.postureData || [];
+
+                    // Enable buttons if we have data
+                    if (postureDataStore.length > 0) {
+                        document.getElementById('exportCsvBtn').disabled = false;
+                        document.getElementById('exportJsonBtn').disabled = false;
+                        document.getElementById('viewDataBtn').disabled = false;
+                        document.getElementById('clearDataBtn').disabled = false;
+                    }
+                }
+            } catch (error) {
+                console.warn('Unable to load data from localStorage:', error);
+            }
+        }
+
+        // Export data as CSV
+        function exportAsCSV() {
+            if (postureDataStore.length === 0) {
+                showNotification('No data to export', 'warning');
+                return;
+            }
+
+            const headers = [
+                'Timestamp', 'Score', 'Confidence', 'Spine Angle', 'Shoulder Tilt',
+                'Head Forward Angle', 'Shoulder Roll', 'Arm Symmetry'
+            ];
+
+            let csvContent = headers.join(',') + '\n';
+
+            postureDataStore.forEach(point => {
+                const row = [
+                    point.timestamp,
+                    point.score,
+                    point.confidence,
+                    point.spineAngle?.toFixed(1) || 'N/A',
+                    point.shoulderTilt?.toFixed(1) || 'N/A',
+                    point.headForwardAngle?.toFixed(1) || 'N/A',
+                    point.shoulderRoll?.toFixed(1) || 'N/A',
+                    point.armSymmetry?.toFixed(1) || 'N/A'
+                ];
+                csvContent += row.join(',') + '\n';
+            });
+
+            downloadFile(csvContent, 'posture_analysis_data.csv', 'text/csv');
+            showNotification(`Exported ${postureDataStore.length} data points to CSV`, 'success');
+        }
+
+        // Export data as JSON
+        function exportAsJSON() {
+            if (postureDataStore.length === 0) {
+                showNotification('No data to export', 'warning');
+                return;
+            }
+
+            const exportData = {
+                metadata: {
+                    exportDate: new Date().toISOString(),
+                    totalReadings: postureDataStore.length,
+                    application: 'Posture Analyzer'
+                },
+                readings: postureDataStore
+            };
+
+            const jsonContent = JSON.stringify(exportData, null, 2);
+            downloadFile(jsonContent, 'posture_analysis_data.json', 'application/json');
+            showNotification(`Exported ${postureDataStore.length} data points to JSON`, 'success');
+        }
+
+        // Download file helper
+        function downloadFile(content, filename, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+
+        // View data summary
+        function viewDataSummary() {
+            if (postureDataStore.length === 0) {
+                showNotification('No data available', 'warning');
+                return;
+            }
+
+            const scores = postureDataStore.map(p => p.score);
+            const avgScore = scores.reduce((a, b) => a + b, 0) / scores.length;
+            const maxScore = Math.max(...scores);
+            const minScore = Math.min(...scores);
+
+            const firstReading = new Date(postureDataStore[0].timestamp);
+            const lastReading = new Date(postureDataStore[postureDataStore.length - 1].timestamp);
+            const duration = Math.round((lastReading - firstReading) / 1000 / 60); // minutes
+
+            const summary = `
+📊 POSTURE DATA SUMMARY
+
+📈 Statistics:
+• Total readings: ${postureDataStore.length}
+• Duration: ${duration} minutes
+• Average score: ${avgScore.toFixed(1)}%
+• Best score: ${maxScore}%
+• Lowest score: ${minScore}%
+
+📅 Time period:
+• First reading: ${firstReading.toLocaleString()}
+• Latest reading: ${lastReading.toLocaleString()}
+
+💾 Data size: ${(JSON.stringify(postureDataStore).length / 1024).toFixed(1)} KB
+            `;
+
+            alert(summary);
+        }
+
+        // Clear stored data
+        function clearStoredData() {
+            if (postureDataStore.length === 0) {
+                showNotification('No data to clear', 'warning');
+                return;
+            }
+
+            const confirmed = confirm(`Are you sure you want to delete all ${postureDataStore.length} stored readings? This cannot be undone.`);
+            if (confirmed) {
+                postureDataStore = [];
+                localStorage.removeItem('postureAnalyzerData');
+
+                // Disable export buttons
+                document.getElementById('exportCsvBtn').disabled = true;
+                document.getElementById('exportJsonBtn').disabled = true;
+                document.getElementById('viewDataBtn').disabled = true;
+                document.getElementById('clearDataBtn').disabled = true;
+
+                showNotification('All data cleared successfully', 'success');
+            }
+        }
         
         // Start camera
         async function startCamera() {
@@ -3085,6 +3336,12 @@
         calibrateBtn.addEventListener('click', calibratePosture);
         resetBtn.addEventListener('click', resetCalibration);
         fullscreenBtn.addEventListener('click', toggleFullscreen);
+
+        // Export functionality event listeners
+        document.getElementById('exportCsvBtn').addEventListener('click', exportAsCSV);
+        document.getElementById('exportJsonBtn').addEventListener('click', exportAsJSON);
+        document.getElementById('viewDataBtn').addEventListener('click', viewDataSummary);
+        document.getElementById('clearDataBtn').addEventListener('click', clearStoredData);
         
         // Settings event listeners
         settingsBtn.addEventListener('click', () => {
@@ -4550,6 +4807,11 @@
                     }
                 });
             }
+        });
+
+        // Load previously stored data on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDataFromStorage();
         });
     </script>
 </body>
